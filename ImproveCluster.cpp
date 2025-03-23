@@ -16,24 +16,6 @@ std::set<char> unionOfBlocks(std::vector<Block*>& blocks) {
     return unionSet;
 }
 
-bool eraseImpossibleNumbers(Block* block, std::set<char>& impossibleNumbers) {
-    bool wasChanged = false;
-
-    for (char c : impossibleNumbers) {
-        if (std::find(block->possibleNumbers.begin(),
-                      block->possibleNumbers.end(),
-                      c) != block->possibleNumbers.end())
-            block->possibleNumbers.erase(c);
-        wasChanged = true;
-        if (block->isSolved()) {
-            std::for_each(block->eventListeners.begin(),
-                          block->eventListeners.end(),
-                          [](auto& listener) { listener->blockSolved(0, 0); });
-        }
-    }
-    return wasChanged;
-}
-
 // Rekursiv hjelpefunksjon som skal returnere alle mulige subsets av en cluster
 // av en gitt størrelse
 void generateSubsets(const std::vector<Block*>& cluster, int n,
@@ -73,8 +55,7 @@ bool improveCluster(std::vector<Block*>& cluster, int n) {
             for (Block* block : cluster) {
                 if (std::find(subSet.begin(), subSet.end(), block) ==
                     subSet.end()) {
-                    if (eraseImpossibleNumbers(block, unionSet))
-                        wasChanged = true;
+                    if (block->eraseNumbers(unionSet)) wasChanged = true;
                 }
             }
         }
@@ -87,7 +68,7 @@ void simpleImproveCluster(std::vector<Block*>& cluster) {
         if (block->isSolved()) {
             std::for_each(cluster.begin(), cluster.end(), [block](Block* b) {
                 if (b != block) {
-                    eraseImpossibleNumbers(b, block->possibleNumbers);
+                    b->eraseNumbers(block->possibleNumbers);
                 }
             });
         }
