@@ -6,9 +6,11 @@ void testSudokuBoard() {
     std::cout << "brett:" << std::endl;
     printBoard(sb);
 
-    int i = 0;
+    int i = 1;
 
-    while (sb.improve(1) && i <= 20) {
+    sb.improve(1);
+
+    while (sb.improve(2) && i <= 20) {
         std::cout << i << ":" << std::endl;
         printBoard(sb);
         i++;

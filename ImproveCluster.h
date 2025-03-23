@@ -3,6 +3,8 @@
 
 #include "Block.h"
 
+bool clusterIsSolved(std::vector<Block*>& cluster);
+
 std::set<char> unionOfBlocks(std::vector<Block*>& blocks);
 
 bool eraseImpossibleNumbers(Block* block, std::set<char>& impossibleNumbers);

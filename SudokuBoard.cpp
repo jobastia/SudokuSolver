@@ -24,6 +24,13 @@ SudokuBoard::SudokuBoard(std::string filename) {
     ifs.close();
 }
 
+bool SudokuBoard::isSolved() const {
+    for (auto row : board) {
+        if (!clusterIsSolved(row)) return false;
+    }
+    return true;
+}
+
 std::vector<Block*> SudokuBoard::getRow(int n) const { return board.at(n); }
 
 std::vector<Block*> SudokuBoard::getCol(int n) const {

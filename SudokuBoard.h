@@ -1,9 +1,9 @@
 #pragma once
 
-#include <string>
-#include <vector>
 #include <fstream>
 #include <iostream>
+#include <string>
+#include <vector>
 
 #include "Block.h"
 #include "ImproveCluster.h"
@@ -11,9 +11,9 @@
 class SudokuBoard {
    private:
     std::vector<std::vector<Block*>> board;
-    bool isSolved();
 
    public:
+    bool isSolved() const;
     std::vector<Block*> getRow(int n) const;
     std::vector<Block*> getCol(int n) const;
     std::vector<Block*> getBox(int n) const;
