@@ -13,9 +13,7 @@ void testSudokuBoard() {
 
     sb.improve(1);
 
-    while (sb.improve(2) && i <= 20) {
-        std::cout << i << ":" << std::endl;
-        printBoard(sb);
-        i++;
-    }
+    while (sb.improve(2) && i <= 20);
+    
+    printBoard(sb);
 }

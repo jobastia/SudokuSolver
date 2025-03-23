@@ -68,21 +68,48 @@ void printBoard(SudokuBoard sb) {
     }
 }
 
+void SudokuBoard::addEventListener(EventListener* eventListener) {
+    eventListeners.push_back(eventListener);
+}
+
 bool SudokuBoard::improve(int n) {
+    std::for_each(eventListeners.begin(), eventListeners.end(),
+                  [n](auto& listener) { listener->currentSubsetSize(n); });
     bool wasChanged = false;
 
     for (int i = 0; i < 9; i++) {
         auto row = getRow(i);
+        std::for_each(eventListeners.begin(), eventListeners.end(),
+                      [i](auto& listener) { listener->clusterIn("row", i); });
         if (improveCluster(row, n) && !wasChanged) wasChanged = true;
+        if (clusterIsSolved(row)) {
+            std::for_each(
+                eventListeners.begin(), eventListeners.end(),
+                [i](auto& listener) { listener->clusterSolved("col", i); });
+        }
     }
     for (int i = 0; i < 9; i++) {
         auto col = getCol(i);
+        std::for_each(eventListeners.begin(), eventListeners.end(),
+                      [i](auto& listener) { listener->clusterIn("col", i); });
         if (improveCluster(col, n) && !wasChanged) wasChanged = true;
-    }
-    for (int i = 0; i < 9; i++) {
-        auto box = getBox(i);
-        if (improveCluster(box, n) && !wasChanged) wasChanged = true;
-    }
+        if (clusterIsSolved(col)) {
+            std::for_each(
+                eventListeners.begin(), eventListeners.end(),
+                [i](auto& listener) { listener->clusterSolved("col", i); });
+        }
+        for (int i = 0; i < 9; i++) {
+            auto box = getBox(i);
+            std::for_each(
+                eventListeners.begin(), eventListeners.end(),
+                [i](auto& listener) { listener->clusterIn("box", i); });
+            if (improveCluster(box, n) && !wasChanged) wasChanged = true;
+            if (clusterIsSolved(box)) {
+                std::for_each(
+                    eventListeners.begin(), eventListeners.end(),
+                    [i](auto& listener) { listener->clusterSolved("box", i); });
+            }
+        }
 
-    return wasChanged;
-}
+        return wasChanged;
+    }
