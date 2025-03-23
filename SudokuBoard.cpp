@@ -1,9 +1,9 @@
 #include "SudokuBoard.h"
 
-SudokuBoard::SudokuBoard(std::string filename){
+SudokuBoard::SudokuBoard(std::string filename) {
     board.reserve(9);
     for (auto row : board) row.reserve(9);
-    
+
     std::ifstream ifs(filename);
     if (!ifs.is_open()) {
         throw std::runtime_error("Could not open file");
@@ -14,9 +14,10 @@ SudokuBoard::SudokuBoard(std::string filename){
         for (int j = 0; j < 9; ++j) {
             int value;
             ifs >> value;
-            if (value != 0) row.push_back(new Block(value));
-            else row.push_back(new Block);
-            
+            if (value != 0)
+                row.push_back(new Block(value));
+            else
+                row.push_back(new Block);
         }
         board.push_back(row);
     }
@@ -35,26 +36,24 @@ std::vector<Block*> SudokuBoard::getCol(int n) {
 
 std::vector<Block*> SudokuBoard::getBox(int n) {
     std::vector<Block*> box;
-    int startrow = (n/3) * 3;
-    int startcol = (n%3) * 3;
+    int startrow = (n / 3) * 3;
+    int startcol = (n % 3) * 3;
 
-    for (int row = startrow; row < startrow + 3; row++){
-        for (int col = startcol; col < startcol + 3; col++){
+    for (int row = startrow; row < startrow + 3; row++) {
+        for (int col = startcol; col < startcol + 3; col++) {
             box.push_back(board.at(row).at(col));
         }
     }
     return box;
-
-
 }
 
-void printBoard(SudokuBoard sb){
-    for (auto row : sb.board){
-        for ( auto block : row){
-            if(block->isSolved){
-                std::cout << static_cast<int>(*block->possibleNumbers.begin()) << " ";
-            }
-            else {
+void printBoard(SudokuBoard sb) {
+    for (auto row : sb.board) {
+        for (auto block : row) {
+            if (block->isSolved) {
+                std::cout << static_cast<int>(*block->possibleNumbers.begin())
+                          << " ";
+            } else {
                 std::cout << 0 << " ";
             }
         }

@@ -1,7 +1,5 @@
 #include "ImproveCluster.h"
 
-
-
 std::set<char> unionOfBlocks(std::vector<Block*>& blocks) {
     std::set<char> unionSet;
     for (Block* block : blocks) {
@@ -14,6 +12,9 @@ std::set<char> unionOfBlocks(std::vector<Block*>& blocks) {
 void eraseImpossibleNumbers(Block* block, std::set<char>& impossibleNumbers) {
     for (char c : impossibleNumbers) {
         block->possibleNumbers.erase(c);
+        if (block->possibleNumbers.size() == 1){
+            block->isSolved = true;
+        }
     }
 }
 
