@@ -24,9 +24,9 @@ SudokuBoard::SudokuBoard(std::string filename) {
     ifs.close();
 }
 
-std::vector<Block*> SudokuBoard::getRow(int n) { return board.at(n); }
+std::vector<Block*> SudokuBoard::getRow(int n) const { return board.at(n); }
 
-std::vector<Block*> SudokuBoard::getCol(int n) {
+std::vector<Block*> SudokuBoard::getCol(int n) const {
     std::vector<Block*> col;
     for (int i = 0; i <= board.size(); i++) {
         col.push_back(board.at(i).at(n));
@@ -34,7 +34,7 @@ std::vector<Block*> SudokuBoard::getCol(int n) {
     return col;
 }
 
-std::vector<Block*> SudokuBoard::getBox(int n) {
+std::vector<Block*> SudokuBoard::getBox(int n) const {
     std::vector<Block*> box;
     int startrow = (n / 3) * 3;
     int startcol = (n % 3) * 3;
@@ -59,4 +59,21 @@ void printBoard(SudokuBoard sb) {
         }
         std::cout << std::endl;
     }
+}
+
+void improveSudokuBoard(SudokuBoard& sb, int n){
+    for (int i = 0; i < 9; i++){
+        auto row = sb.getRow(i);
+        improveCluster(row, n);
+    }
+    for (int i = 0; i < 9; i++){
+        auto col = sb.getCol(i);
+        improveCluster(col, n);
+    }
+    for (int i = 0; i < 9; i++){
+        auto box = sb.getBox(i);
+        improveCluster(box, n);
+    }
+
+
 }

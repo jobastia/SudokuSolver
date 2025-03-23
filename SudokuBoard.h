@@ -14,13 +14,14 @@ class SudokuBoard {
     bool isSolved;
 
    public:
-    std::vector<Block*> getRow(int n);
-    std::vector<Block*> getCol(int n);
-    std::vector<Block*> getBox(int n);
+    std::vector<Block*> getRow(int n) const;
+    std::vector<Block*> getCol(int n) const;
+    std::vector<Block*> getBox(int n) const;
 
     friend void printBoard(SudokuBoard board);
 
-    SudokuBoard();
+    // SudokuBoard();
     SudokuBoard(std::string filename);
-    ~SudokuBoard();
 };
+
+    void improveSudokuBoard(SudokuBoard sb, int n);
