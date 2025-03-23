@@ -28,7 +28,7 @@ std::vector<Block*> SudokuBoard::getRow(int n) const { return board.at(n); }
 
 std::vector<Block*> SudokuBoard::getCol(int n) const {
     std::vector<Block*> col;
-    for (int i = 0; i <= board.size(); i++) {
+    for (int i = 0; i < board.size(); i++) {
         col.push_back(board.at(i).at(n));
     }
     return col;
@@ -50,7 +50,7 @@ std::vector<Block*> SudokuBoard::getBox(int n) const {
 void printBoard(SudokuBoard sb) {
     for (auto row : sb.board) {
         for (auto block : row) {
-            if (block->isSolved) {
+            if (block->isSolved()) {
                 std::cout << static_cast<int>(*block->possibleNumbers.begin())
                           << " ";
             } else {
@@ -61,19 +61,17 @@ void printBoard(SudokuBoard sb) {
     }
 }
 
-void improveSudokuBoard(SudokuBoard& sb, int n){
-    for (int i = 0; i < 9; i++){
-        auto row = sb.getRow(i);
+void SudokuBoard::improve(int n) {
+    for (int i = 0; i < 9; i++) {
+        auto row = getRow(i);
         improveCluster(row, n);
     }
-    for (int i = 0; i < 9; i++){
-        auto col = sb.getCol(i);
+    for (int i = 0; i < 9; i++) {
+        auto col = getCol(i);
         improveCluster(col, n);
     }
-    for (int i = 0; i < 9; i++){
-        auto box = sb.getBox(i);
+    for (int i = 0; i < 9; i++) {
+        auto box = getBox(i);
         improveCluster(box, n);
     }
-
-
 }

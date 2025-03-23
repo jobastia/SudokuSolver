@@ -1,5 +1,12 @@
 #include "ImproveCluster.h"
 
+bool clusterIsSolved(std::vector<Block*>& cluster) {
+    for (Block* block : cluster) {
+        if (!block->isSolved()) return false;
+    }
+    return true;
+}
+
 std::set<char> unionOfBlocks(std::vector<Block*>& blocks) {
     std::set<char> unionSet;
     for (Block* block : blocks) {
@@ -9,13 +16,17 @@ std::set<char> unionOfBlocks(std::vector<Block*>& blocks) {
     return unionSet;
 }
 
-void eraseImpossibleNumbers(Block* block, std::set<char>& impossibleNumbers) {
+bool eraseImpossibleNumbers(Block* block, std::set<char>& impossibleNumbers) {
+    bool wasChanged = false;
+
     for (char c : impossibleNumbers) {
-        block->possibleNumbers.erase(c);
-        if (block->possibleNumbers.size() == 1){
-            block->isSolved = true;
-        }
+        if (std::find(block->possibleNumbers.begin(),
+                      block->possibleNumbers.end(),
+                      c) != block->possibleNumbers.end())
+            block->possibleNumbers.erase(c);
+        wasChanged = true;
     }
+    return wasChanged;
 }
 
 // Rekursiv hjelpefunksjon som skal returnere alle mulige subsets av en cluster
@@ -45,7 +56,11 @@ std::vector<std::vector<Block*>> getSubsets(std::vector<Block*> cluster,
     return allSubsets;
 }
 
-void improveCluster(std::vector<Block*>& cluster, int n) {
+bool improveCluster(std::vector<Block*>& cluster, int n) {
+    if (clusterIsSolved(cluster)) return false;
+
+    bool wasChanged = false;
+
     auto allSubsets = getSubsets(cluster, n);
     for (auto subSet : allSubsets) {
         std::set<char> unionSet = unionOfBlocks(subSet);
@@ -53,16 +68,17 @@ void improveCluster(std::vector<Block*>& cluster, int n) {
             for (Block* block : cluster) {
                 if (std::find(subSet.begin(), subSet.end(), block) ==
                     subSet.end()) {
-                    eraseImpossibleNumbers(block, unionSet);
+                    if (eraseImpossibleNumbers(block, unionSet)) wasChanged = true;
                 }
             }
         }
     }
+    return wasChanged;
 }
 
 void simpleImproveCluster(std::vector<Block*>& cluster) {
     for (Block* block : cluster) {
-        if (block->isSolved) {
+        if (block->isSolved()) {
             std::for_each(cluster.begin(), cluster.end(), [block](Block* b) {
                 if (b != block) {
                     eraseImpossibleNumbers(b, block->possibleNumbers);

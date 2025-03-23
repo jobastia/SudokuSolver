@@ -2,9 +2,7 @@
 
 #include "Block.h"
 #include "ImproveCluster.h"
-#include "Tests/TestImproveCluster.h"
-#include "Tests/TestSudokuBoard.h"
+#include "TestImproveCluster.h"
+#include "TestSudokuBoard.h"
 
-int main() {
-
-}
+int main() { testSudokuBoard(); }

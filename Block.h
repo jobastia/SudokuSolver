@@ -5,7 +5,7 @@
 
 struct Block {
     std::set<char> possibleNumbers;
-    bool isSolved;
+    bool isSolved();
 
     Block();
     Block(char solution);

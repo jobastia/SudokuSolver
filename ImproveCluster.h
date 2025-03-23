@@ -5,7 +5,7 @@
 
 std::set<char> unionOfBlocks(std::vector<Block*>& blocks);
 
-void eraseImpossibleNumbers(Block* block, std::set<char>& impossibleNumbers);
+bool eraseImpossibleNumbers(Block* block, std::set<char>& impossibleNumbers);
 
 void generateSubsets(const std::vector<Block*>& cluster, int n,
                      std::vector<Block*>& currentSubset,
@@ -14,6 +14,6 @@ void generateSubsets(const std::vector<Block*>& cluster, int n,
 
 std::vector<std::vector<Block*>> getSubsets(std::vector<Block*> cluster, int n);
 
-void improveCluster(std::vector<Block*>& cluster, int n);
+bool improveCluster(std::vector<Block*>& cluster, int n);
 
 void simpleImproveCluster(std::vector<Block*>& blocks);
