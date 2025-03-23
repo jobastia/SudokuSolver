@@ -1,15 +1,15 @@
 #pragma once
 
+#include <algorithm>
 #include <fstream>
 #include <iostream>
+#include <iterator>
 #include <string>
 #include <vector>
-#include <iterator>
-#include <algorithm>
 
 #include "Block.h"
-#include "ImproveCluster.h"
 #include "Eventlistener.h"
+#include "ImproveCluster.h"
 
 class SudokuBoard {
    private:
