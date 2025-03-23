@@ -15,9 +15,9 @@ SudokuBoard::SudokuBoard(std::string filename) {
             int value;
             ifs >> value;
             if (value != 0)
-                row.push_back(new Block(value));
+                row.push_back(new Block(value, i, j));
             else
-                row.push_back(new Block);
+                row.push_back(new Block(i, j));
         }
         board.push_back(row);
     }
@@ -70,6 +70,11 @@ void printBoard(SudokuBoard sb) {
 
 void SudokuBoard::addEventListener(EventListener* eventListener) {
     eventListeners.push_back(eventListener);
+    for (auto row : board){
+        for (auto block : row){
+            block->eventListeners.push_back(eventListener);
+        }
+    }
 }
 
 bool SudokuBoard::improve(int n) {
@@ -85,7 +90,7 @@ bool SudokuBoard::improve(int n) {
         if (clusterIsSolved(row)) {
             std::for_each(
                 eventListeners.begin(), eventListeners.end(),
-                [i](auto& listener) { listener->clusterSolved("col", i); });
+                [i](auto& listener) { listener->clusterSolved("row", i); });
         }
     }
     for (int i = 0; i < 9; i++) {
@@ -98,18 +103,18 @@ bool SudokuBoard::improve(int n) {
                 eventListeners.begin(), eventListeners.end(),
                 [i](auto& listener) { listener->clusterSolved("col", i); });
         }
-        for (int i = 0; i < 9; i++) {
-            auto box = getBox(i);
+    }
+    for (int i = 0; i < 9; i++) {
+        auto box = getBox(i);
+        std::for_each(eventListeners.begin(), eventListeners.end(),
+                      [i](auto& listener) { listener->clusterIn("box", i); });
+        if (improveCluster(box, n) && !wasChanged) wasChanged = true;
+        if (clusterIsSolved(box)) {
             std::for_each(
                 eventListeners.begin(), eventListeners.end(),
-                [i](auto& listener) { listener->clusterIn("box", i); });
-            if (improveCluster(box, n) && !wasChanged) wasChanged = true;
-            if (clusterIsSolved(box)) {
-                std::for_each(
-                    eventListeners.begin(), eventListeners.end(),
-                    [i](auto& listener) { listener->clusterSolved("box", i); });
-            }
+                [i](auto& listener) { listener->clusterSolved("box", i); });
         }
-
-        return wasChanged;
     }
+
+    return wasChanged;
+}

@@ -25,6 +25,11 @@ bool eraseImpossibleNumbers(Block* block, std::set<char>& impossibleNumbers) {
                       c) != block->possibleNumbers.end())
             block->possibleNumbers.erase(c);
         wasChanged = true;
+        if (block->isSolved()) {
+            std::for_each(block->eventListeners.begin(),
+                          block->eventListeners.end(),
+                          [](auto& listener) { listener->blockSolved(0, 0); });
+        }
     }
     return wasChanged;
 }
@@ -68,7 +73,8 @@ bool improveCluster(std::vector<Block*>& cluster, int n) {
             for (Block* block : cluster) {
                 if (std::find(subSet.begin(), subSet.end(), block) ==
                     subSet.end()) {
-                    if (eraseImpossibleNumbers(block, unionSet)) wasChanged = true;
+                    if (eraseImpossibleNumbers(block, unionSet))
+                        wasChanged = true;
                 }
             }
         }
