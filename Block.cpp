@@ -14,6 +14,8 @@ bool Block::isSolved() { return possibleNumbers.size() == 1; }
 bool Block::eraseNumbers(std::set<char>& eraser) {
     bool wasChanged = false;
 
+    if (isSolved()) return wasChanged;
+
     for (char c : eraser) {
         if (std::find(possibleNumbers.begin(), possibleNumbers.end(), c) !=
             possibleNumbers.end())
