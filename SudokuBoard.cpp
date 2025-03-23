@@ -9,12 +9,14 @@ SudokuBoard::SudokuBoard(std::string filename){
         throw std::runtime_error("Could not open file");
     }
 
-    for (int i = 0; i < 9; ++i) {
+    for (int i = 0; i < 9; i++) {
         std::vector<Block*> row;
         for (int j = 0; j < 9; ++j) {
             int value;
             ifs >> value;
-            row.push_back(new Block(value));
+            if (value != 0) row.push_back(new Block(value));
+            else row.push_back(new Block);
+            
         }
         board.push_back(row);
     }
@@ -44,4 +46,18 @@ std::vector<Block*> SudokuBoard::getBox(int n) {
     return box;
 
 
+}
+
+void printBoard(SudokuBoard sb){
+    for (auto row : sb.board){
+        for ( auto block : row){
+            if(block->isSolved){
+                std::cout << static_cast<int>(*block->possibleNumbers.begin()) << " ";
+            }
+            else {
+                std::cout << 0 << " ";
+            }
+        }
+        std::cout << std::endl;
+    }
 }
