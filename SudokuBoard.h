@@ -18,7 +18,7 @@ class SudokuBoard {
     std::vector<Block*> getCol(int n) const;
     std::vector<Block*> getBox(int n) const;
 
-    void improve(int n);
+    bool improve(int n);
 
     friend void printBoard(SudokuBoard board);
 

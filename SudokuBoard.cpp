@@ -61,17 +61,21 @@ void printBoard(SudokuBoard sb) {
     }
 }
 
-void SudokuBoard::improve(int n) {
+bool SudokuBoard::improve(int n) {
+    bool wasChanged = false;
+
     for (int i = 0; i < 9; i++) {
         auto row = getRow(i);
-        improveCluster(row, n);
+        if (improveCluster(row, n) && !wasChanged) wasChanged = true;
     }
     for (int i = 0; i < 9; i++) {
         auto col = getCol(i);
-        improveCluster(col, n);
+        if (improveCluster(col, n) && !wasChanged) wasChanged = true;
     }
     for (int i = 0; i < 9; i++) {
         auto box = getBox(i);
-        improveCluster(box, n);
+        if (improveCluster(box, n) && !wasChanged) wasChanged = true;
     }
+
+    return wasChanged;
 }
