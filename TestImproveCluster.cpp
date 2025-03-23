@@ -19,18 +19,6 @@ void testUnionOfBlocks(std::vector<Block*>& cluster) {
     printSet(unionOfBlocks(cluster));
 }
 
-void testEraseimpossibleNumbers(Block* block, std::set<char> eraser) {
-    std::cout << "Block: " << std::endl;
-    printSet(block->possibleNumbers);
-    std::cout << "Eraser: " << std::endl;
-    printSet(eraser);
-
-    eraseImpossibleNumbers(block, eraser);
-
-    std::cout << "Cluster after erasing: " << std::endl;
-    printSet(block->possibleNumbers);
-}
-
 void testGetSubsets(std::vector<Block*>& cluster) {
     for (int i = 1; i <= cluster.size(); i++) {
         std::cout << "Subsets of size " << i << ": " << std::endl;
@@ -71,8 +59,6 @@ void fullImproveClusterTest() {
     testUnionOfBlocks(cluster);
 
     testGetSubsets(cluster);
-
-    // testEraseimpossibleNumbers(&b1, b4.possibleNumbers);
 
     testImproveCluster(cluster);
 }
