@@ -51,15 +51,15 @@ void testImproveCluster(std::vector<Block*>& cluster) {
 }
 
 void fullImproveClusterTest() {
-    Block b1;
-    Block b2;
-    Block b3;
-    Block b4;
-    Block b5;
-    Block b6;
-    Block b7;
-    Block b8;
-    Block b9;
+    Block b1(1,1);
+    Block b2(1,1);
+    Block b3(1,1);
+    Block b4(1,1);
+    Block b5(1,1);
+    Block b6(1,1);
+    Block b7(1,1);
+    Block b8(1,1);
+    Block b9(1,1);
 
     b3.possibleNumbers = {3,1,6,7};
     b4.possibleNumbers = {3,1,6,7};
