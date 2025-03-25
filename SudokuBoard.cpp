@@ -70,8 +70,8 @@ void printBoard(SudokuBoard sb) {
 
 void SudokuBoard::addEventListener(EventListener* eventListener) {
     eventListeners.push_back(eventListener);
-    for (auto row : board){
-        for (auto block : row){
+    for (auto row : board) {
+        for (auto block : row) {
             block->eventListeners.push_back(eventListener);
         }
     }
@@ -86,7 +86,10 @@ bool SudokuBoard::improve(int n) {
         auto row = getRow(i);
         std::for_each(eventListeners.begin(), eventListeners.end(),
                       [i](auto& listener) { listener->clusterIn("row", i); });
-        if (improveCluster(row, n) && !wasChanged) wasChanged = true;
+        if (improveCluster(row, n) && !wasChanged)
+            wasChanged = true;
+        else
+            continue;
         if (clusterIsSolved(row)) {
             std::for_each(
                 eventListeners.begin(), eventListeners.end(),
@@ -97,7 +100,10 @@ bool SudokuBoard::improve(int n) {
         auto col = getCol(i);
         std::for_each(eventListeners.begin(), eventListeners.end(),
                       [i](auto& listener) { listener->clusterIn("col", i); });
-        if (improveCluster(col, n) && !wasChanged) wasChanged = true;
+        if (improveCluster(col, n) && !wasChanged)
+            wasChanged = true;
+        else
+            continue;
         if (clusterIsSolved(col)) {
             std::for_each(
                 eventListeners.begin(), eventListeners.end(),
@@ -108,7 +114,10 @@ bool SudokuBoard::improve(int n) {
         auto box = getBox(i);
         std::for_each(eventListeners.begin(), eventListeners.end(),
                       [i](auto& listener) { listener->clusterIn("box", i); });
-        if (improveCluster(box, n) && !wasChanged) wasChanged = true;
+        if (improveCluster(box, n) && !wasChanged)
+            wasChanged = true;
+        else
+            continue;
         if (clusterIsSolved(box)) {
             std::for_each(
                 eventListeners.begin(), eventListeners.end(),
