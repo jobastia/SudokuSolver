@@ -12,12 +12,7 @@ void testSudokuBoard() {
     LoggingEventListener logger;
 
     sb.addEventListener(&logger);
-
-    int i = 1;
-
-    sb.improve(1);
-
-    while (sb.improve(2) && i <= 20);
+    sb.solve();
 
     printBoard(sb);
 }

@@ -133,16 +133,22 @@ bool SudokuBoard::improve(int n) {
 }
 
 void SudokuBoard::solve() {
-    int subsetSize = 1;
+    int subsetSize = 2;
 
     while (!isSolved()) {
         int i = 0;
-        while (improve(subsetSize)) {
+        while (!improve(subsetSize)) {
             i++;
+            std::cout << i << std::endl;
         }
-        if (i > 0) {
+        if (i == 0 || subsetSize == 1) {
             subsetSize++;
-        } else
+        } else {
             subsetSize = 1;
+        }
+        if (subsetSize == 9) {
+            std::cout << "kuk!" << std::endl;
+            return;
+        }
     }
 }
