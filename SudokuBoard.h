@@ -26,7 +26,7 @@ class SudokuBoard {
 
     void addEventListener(EventListener* eventListener);
 
-    bool solve();
+    void solve();
 
     friend void printBoard(SudokuBoard board);
 

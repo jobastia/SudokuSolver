@@ -26,8 +26,12 @@ SudokuBoard::SudokuBoard(std::string filename) {
 
 bool SudokuBoard::isSolved() const {
     for (auto row : board) {
-        if (!clusterIsSolved(row)) return false;
+        if (!clusterIsSolved(row)) {
+            return false;
+        }
     }
+    std::for_each(eventListeners.begin(), eventListeners.end(),
+                  [](auto& listener) { listener->boardSolved(); });
     return true;
 }
 
@@ -128,6 +132,17 @@ bool SudokuBoard::improve(int n) {
     return wasChanged;
 }
 
-bool SudokuBoard::solve(){
-    
+void SudokuBoard::solve() {
+    int subsetSize = 1;
+
+    while (!isSolved()) {
+        int i = 0;
+        while (improve(subsetSize)) {
+            i++;
+        }
+        if (i > 0) {
+            subsetSize++;
+        } else
+            subsetSize = 1;
+    }
 }
