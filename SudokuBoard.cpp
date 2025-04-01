@@ -127,3 +127,7 @@ bool SudokuBoard::improve(int n) {
 
     return wasChanged;
 }
+
+bool SudokuBoard::solve(){
+    
+}

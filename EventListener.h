@@ -9,6 +9,7 @@ class EventListener {
     virtual void clusterSolved(std::string clusterType, int clusterIndex) = 0;
     virtual void blockSolved(int row, int collumn, char number) = 0;
     virtual void currentSubsetSize(int n) = 0;
+    virtual void boardSolved() = 0;
 };
 
 class LoggingEventListener : public EventListener {
@@ -31,6 +32,8 @@ class LoggingEventListener : public EventListener {
     void currentSubsetSize(int n) override {
         std::cout << "Current Subset Size: " << n << std::endl;
     }
+
+    void boardSolved() { std::cout << "Board solved!" << std::endl; }
 };
 
 class GraphicEventListener : public EventListener {
@@ -38,4 +41,5 @@ class GraphicEventListener : public EventListener {
     virtual void clusterSolved(std::string clusterType, int clusterIndex);
     virtual void blockSolved(int row, int collumn, char number);
     virtual void currentSubsetSize(int n);
+    virtual void boardSolved();
 };
