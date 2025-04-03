@@ -153,3 +153,30 @@ void SudokuBoard::solve() {
         }
     }
 }
+
+bool SudokuBoard::legallySolved() const {
+    bool legallySolved = true;
+
+    for (int i = 0; i < 9; i++) {
+        auto box = getBox(i);
+        auto row = getRow(i);
+        auto col = getCol(i);
+
+        if (!ClusterLegallySolved(box)) {
+            legallySolved = false;
+            std::cout << "Box at " << i << " illegally solved" << std::endl;
+        }
+        if (!ClusterLegallySolved(row)) {
+            legallySolved = false;
+            std::cout << "Row at " << i << " illegally solved" << std::endl;
+        }
+        if (!ClusterLegallySolved(col)) {
+            legallySolved = false;
+            std::cout << "Column at " << i << " illegally solved" << std::endl;
+        }
+
+    }
+    if (legallySolved) std::cout << "Board legally solved!" << std::endl;
+
+    return legallySolved;
+}

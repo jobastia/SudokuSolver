@@ -30,6 +30,8 @@ class SudokuBoard {
 
     friend void printBoard(SudokuBoard board);
 
+    bool legallySolved() const;
+
     // SudokuBoard();
     SudokuBoard(std::string filename);
 };

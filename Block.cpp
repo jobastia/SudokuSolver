@@ -22,13 +22,14 @@ bool Block::eraseNumbers(std::set<char>& eraser) {
             possibleNumbers.erase(c);
             wasChanged = true;
         }
-        if (isSolved()) {
-            std::for_each(eventListeners.begin(), eventListeners.end(),
-                          [*this](auto& listener) {
-                              listener->blockSolved(rowPos, colPos,
-                                                    *possibleNumbers.begin());
-                          });
-        }
     }
+    if (isSolved()) {
+        std::for_each(eventListeners.begin(), eventListeners.end(),
+                      [*this](auto& listener) {
+                          listener->blockSolved(rowPos, colPos,
+                                                *possibleNumbers.begin());
+                      });
+    }
+
     return wasChanged;
 }

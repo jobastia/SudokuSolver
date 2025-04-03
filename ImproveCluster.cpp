@@ -74,3 +74,15 @@ void simpleImproveCluster(std::vector<Block*>& cluster) {
         }
     }
 }
+
+bool ClusterLegallySolved(std::vector<Block*>& cluster) {
+    if (!clusterIsSolved(cluster)) return false;
+    std::set<char> clusterSet;
+
+    for (auto block : cluster) {
+        clusterSet.insert(*(block->possibleNumbers.begin()));
+    }
+    if (cluster.size() != 9) return false;
+
+    return true;
+}

@@ -13,6 +13,7 @@ void testSudokuBoard() {
 
     sb.addEventListener(&logger);
     sb.solve();
+    sb.legallySolved();
 
     printBoard(sb);
 }
