@@ -18,13 +18,15 @@ bool Block::eraseNumbers(std::set<char>& eraser) {
 
     for (char c : eraser) {
         if (std::find(possibleNumbers.begin(), possibleNumbers.end(), c) !=
-            possibleNumbers.end())
+            possibleNumbers.end()) {
             possibleNumbers.erase(c);
-        wasChanged = true;
+            wasChanged = true;
+        }
         if (isSolved()) {
             std::for_each(eventListeners.begin(), eventListeners.end(),
                           [*this](auto& listener) {
-                              listener->blockSolved(rowPos, colPos, *possibleNumbers.begin());
+                              listener->blockSolved(rowPos, colPos,
+                                                    *possibleNumbers.begin());
                           });
         }
     }

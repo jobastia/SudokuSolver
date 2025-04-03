@@ -133,11 +133,11 @@ bool SudokuBoard::improve(int n) {
 }
 
 void SudokuBoard::solve() {
-    int subsetSize = 2;
+    int subsetSize = 1;
 
     while (!isSolved()) {
         int i = 0;
-        while (!improve(subsetSize)) {
+        while (improve(subsetSize)) {
             i++;
             std::cout << i << std::endl;
         }
@@ -148,6 +148,7 @@ void SudokuBoard::solve() {
         }
         if (subsetSize == 9) {
             std::cout << "kuk!" << std::endl;
+            // kall på en guess solution
             return;
         }
     }
