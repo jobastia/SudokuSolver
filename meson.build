@@ -29,7 +29,7 @@ exe = executable(
   'program',
   src,
 'Block.cpp',
-'EventListener.cpp',
+'GraphicEventListener.cpp',
 'ImproveCluster.cpp',
 'SudokuBoard.cpp',
 'TestImproveCluster.cpp',

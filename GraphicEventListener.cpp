@@ -9,6 +9,7 @@ GraphicEventListener::GraphicEventListener(int x, int y, int width, int height)
     int bottomEdge = static_cast<int>(height / 2 + blockLength * 4.5);
     int leftmostEdge = static_cast<int>(width / 2 - blockLength * 4.5);
     int rightmostEdge = static_cast<int>(width / 2 + blockLength * 4.5);
+    
     int row = 0;
     for (int y = topEdge; y <= bottomEdge; y += blockLength) {
         window.draw_line({leftmostEdge, y}, {rightmostEdge, y});
