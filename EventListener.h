@@ -22,36 +22,12 @@ class EventListener {
 
 class LoggingEventListener : public EventListener {
    public:
-    void boardCreated(std::vector<Block*>& SolvedBlocks) override {
-        /*
-        std::cout << "Board Created!" << std::endl;
-        for (auto block : SolvedBlocks) {
-            int number = static_cast<int>(*((block->possibleNumbers).begin()));
-            std::cout << "row: " << block->rowPos << " col: " << block->colPos
-                      << " Number: " << number << std::endl;
-        }
-        */
-    }
-    void clusterIn(std::string clusterType, int clusterIndex) override {
-        std::cout << "Cluster In: " << clusterType << " at index "
-                  << clusterIndex << std::endl;
-    }
-
-    void clusterSolved(std::string clusterType, int clusterIndex) override {
-        std::cout << "Cluster Solved: " << clusterType << " at index "
-                  << clusterIndex << std::endl;
-    }
-
-    void blockSolved(int row, int column, char number) override {
-        std::cout << "Block Solved: (" << row << ", " << column << ") "
-                  << "Set to: " << static_cast<int>(number) << std::endl;
-    }
-
-    void currentSubsetSize(int n) override {
-        std::cout << "Current Subset Size: " << n << std::endl;
-    }
-
-    void boardSolved() override { std::cout << "Board solved!" << std::endl; }
+    void boardCreated(std::vector<Block*>& SolvedBlocks) override; 
+    void clusterIn(std::string clusterType, int clusterIndex) override; 
+    void clusterSolved(std::string clusterType, int clusterIndex) override; 
+    void blockSolved(int row, int column, char number) override; 
+    void currentSubsetSize(int n) override; 
+    void boardSolved() override; 
 };
 
 class GraphicEventListener : public EventListener {

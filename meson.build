@@ -31,6 +31,7 @@ exe = executable(
 'Block.cpp',
 'GraphicEventListener.cpp',
 'ImproveCluster.cpp',
+'LoggingEventListener.cpp',
 'SudokuBoard.cpp',
 'TestImproveCluster.cpp',
 'TestSudokuBoard.cpp',
