@@ -33,5 +33,5 @@ class SudokuBoard {
     bool legallySolved() const;
 
     // SudokuBoard();
-    SudokuBoard(std::string filename);
+    SudokuBoard(std::string filename, std::vector<EventListener*> eventListeners);
 };

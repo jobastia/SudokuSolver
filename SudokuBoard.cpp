@@ -1,6 +1,8 @@
 #include "SudokuBoard.h"
 
-SudokuBoard::SudokuBoard(std::string filename) {
+SudokuBoard::SudokuBoard(std::string filename, std::vector<EventListener*> eventListeners): eventListeners{eventListeners} {
+    std::vector<Block*> solvedBlocks;
+
     board.reserve(9);
     for (auto row : board) row.reserve(9);
 
@@ -14,16 +16,20 @@ SudokuBoard::SudokuBoard(std::string filename) {
         for (int j = 0; j < 9; ++j) {
             int value;
             ifs >> value;
-            if (value != 0)
-                row.push_back(new Block(value, i, j));
-            else
+            if (value != 0) {
+                Block* solvedBlock = new Block(value, i, j);
+                solvedBlocks.push_back(solvedBlock);
+                row.push_back(solvedBlock);
+            } else
                 row.push_back(new Block(i, j));
         }
         board.push_back(row);
     }
     ifs.close();
     std::for_each(eventListeners.begin(), eventListeners.end(),
-                  [this](auto& listener) { listener->boardCreated(this->board); });
+                  [&solvedBlocks](auto listener) {
+                      listener->boardCreated(solvedBlocks);
+                  });
 }
 
 bool SudokuBoard::isSolved() const {
