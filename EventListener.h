@@ -2,9 +2,13 @@
 #include <iostream>
 #include <string>
 
+#include "AnimationWindow.h"
+#include "Block.h"
+
 class EventListener {
    private:
    public:
+    virtual void boardCreated(std::vector<std::vector<Block*>>& board) = 0;
     virtual void clusterIn(std::string clusterType, int clusterIndex) = 0;
     virtual void clusterSolved(std::string clusterType, int clusterIndex) = 0;
     virtual void blockSolved(int row, int collumn, char number) = 0;
@@ -14,6 +18,9 @@ class EventListener {
 
 class LoggingEventListener : public EventListener {
    public:
+    void boardCreated(std::vector<std::vector<Block*>>& board) override {
+        std::cout << "Board Created!" << std::endl;
+    }
     void clusterIn(std::string clusterType, int clusterIndex) override {
         std::cout << "Cluster In: " << clusterType << " at index "
                   << clusterIndex << std::endl;
@@ -37,9 +44,16 @@ class LoggingEventListener : public EventListener {
 };
 
 class GraphicEventListener : public EventListener {
-    virtual void clusterIn(std::string clusterType, int clusterIndex);
-    virtual void clusterSolved(std::string clusterType, int clusterIndex);
-    virtual void blockSolved(int row, int collumn, char number);
-    virtual void currentSubsetSize(int n);
-    virtual void boardSolved();
+   private:
+    TDT4102::AnimationWindow window;
+
+   public:
+    void boardCreated(std::vector<std::vector<Block*>>& board) override;
+    void clusterIn(std::string clusterType, int clusterIndex) override;
+    void clusterSolved(std::string clusterType, int clusterIndex) override;
+    void blockSolved(int row, int collumn, char number) override;
+    void currentSubsetSize(int n) override;
+    void boardSolved() override;
+
+    GraphicEventListener();
 };

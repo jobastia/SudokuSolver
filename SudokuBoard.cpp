@@ -22,6 +22,8 @@ SudokuBoard::SudokuBoard(std::string filename) {
         board.push_back(row);
     }
     ifs.close();
+    std::for_each(eventListeners.begin(), eventListeners.end(),
+                  [this](auto& listener) { listener->boardCreated(this->board); });
 }
 
 bool SudokuBoard::isSolved() const {
@@ -174,7 +176,6 @@ bool SudokuBoard::legallySolved() const {
             legallySolved = false;
             std::cout << "Column at " << i << " illegally solved" << std::endl;
         }
-
     }
     if (legallySolved) std::cout << "Board legally solved!" << std::endl;
 
