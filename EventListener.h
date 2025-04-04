@@ -1,6 +1,7 @@
 #pragma once
 #include <algorithm>
 #include <iostream>
+#include <map>
 #include <string>
 
 #include "AnimationWindow.h"
@@ -22,7 +23,14 @@ class EventListener {
 class LoggingEventListener : public EventListener {
    public:
     void boardCreated(std::vector<Block*>& SolvedBlocks) override {
+        /*
         std::cout << "Board Created!" << std::endl;
+        for (auto block : SolvedBlocks) {
+            int number = static_cast<int>(*((block->possibleNumbers).begin()));
+            std::cout << "row: " << block->rowPos << " col: " << block->colPos
+                      << " Number: " << number << std::endl;
+        }
+        */
     }
     void clusterIn(std::string clusterType, int clusterIndex) override {
         std::cout << "Cluster In: " << clusterType << " at index "
@@ -49,8 +57,11 @@ class LoggingEventListener : public EventListener {
 class GraphicEventListener : public EventListener {
    private:
     TDT4102::AnimationWindow window;
-    int windowWidth = 500;
-    int windowHeight = 500;
+    int windowWidth;
+    int windowHeight;
+
+    std::map<int, int> colToX;
+    std::map<int, int> rowToY;
 
    public:
     void boardCreated(std::vector<Block*>& SolvedBlocks) override;
@@ -60,7 +71,6 @@ class GraphicEventListener : public EventListener {
     void currentSubsetSize(int n) override;
     void boardSolved() override;
 
-    GraphicEventListener(int x = 0, int y = 0, int width = 500, int height = 500);
+    GraphicEventListener(int x = 100, int y = 100, int width = 500,
+                         int height = 500);
 };
-
-void drawEmptyBoard(TDT4102::AnimationWindow& window, int windowWidth, int windowHeight);
