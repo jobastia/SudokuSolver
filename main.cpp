@@ -5,4 +5,7 @@
 #include "TestImproveCluster.h"
 #include "TestSudokuBoard.h"
 
-int main() { testSudokuBoard(); }
+int main() {
+    testSudokuBoard();
+    return 0;
+}

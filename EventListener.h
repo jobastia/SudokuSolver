@@ -5,6 +5,8 @@
 #include "AnimationWindow.h"
 #include "Block.h"
 
+struct Block;
+
 class EventListener {
    private:
    public:
@@ -40,7 +42,7 @@ class LoggingEventListener : public EventListener {
         std::cout << "Current Subset Size: " << n << std::endl;
     }
 
-    void boardSolved() { std::cout << "Board solved!" << std::endl; }
+    void boardSolved() override { std::cout << "Board solved!" << std::endl; }
 };
 
 class GraphicEventListener : public EventListener {
