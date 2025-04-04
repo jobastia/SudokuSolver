@@ -2,8 +2,9 @@
 
 void testSudokuBoard() {
     LoggingEventListener logger;
+    GraphicEventListener grapher;
 
-    std::vector<EventListener*> eventListeners = {&logger};
+    std::vector<EventListener*> eventListeners = {&logger, &grapher};
     
     SudokuBoard sb(
         "C:\\Users\\jone\\OneDrive - "

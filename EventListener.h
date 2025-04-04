@@ -1,4 +1,5 @@
 #pragma once
+#include <algorithm>
 #include <iostream>
 #include <string>
 
@@ -44,10 +45,12 @@ class LoggingEventListener : public EventListener {
 
     void boardSolved() override { std::cout << "Board solved!" << std::endl; }
 };
-/*
+
 class GraphicEventListener : public EventListener {
    private:
     TDT4102::AnimationWindow window;
+    int windowWidth = 500;
+    int windowHeight = 500;
 
    public:
     void boardCreated(std::vector<Block*>& SolvedBlocks) override;
@@ -57,6 +60,7 @@ class GraphicEventListener : public EventListener {
     void currentSubsetSize(int n) override;
     void boardSolved() override;
 
-    GraphicEventListener();
+    GraphicEventListener(int x = 0, int y = 0, int width = 500, int height = 500);
 };
-*/
+
+void drawEmptyBoard(TDT4102::AnimationWindow& window, int windowWidth, int windowHeight);
