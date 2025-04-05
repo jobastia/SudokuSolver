@@ -115,13 +115,19 @@ void drawFatRectangle(TDT4102::AnimationWindow& window, TDT4102::Point point,
                       int width, int height, TDT4102::Color color,
                       int extraThickness) {
     for (int pixel = -extraThickness; pixel <= extraThickness; pixel++) {
-        window.draw_line({point.x, point.y + pixel},
-                         {point.x + width, point.y + pixel}, color);
-        window.draw_line({point.x + pixel, point.y},
-                         {point.x + pixel, point.y + height}, color);
-        window.draw_line({point.x, point.y + height + pixel},
-                         {point.x + width, point.y + height + pixel}, color);
-        window.draw_line({point.x + width + pixel, point.y},
-                         {point.x + width + pixel, point.y + height}, color);
+        window.draw_line({point.x - extraThickness, point.y + pixel},
+                         {point.x + extraThickness + width, point.y + pixel},
+                         color);
+        window.draw_line({point.x + pixel, point.y - extraThickness},
+                         {point.x + pixel, point.y + height + extraThickness},
+                         color);
+        window.draw_line(
+            {point.x - extraThickness, point.y + height + pixel},
+            {point.x + extraThickness + width, point.y + height + pixel},
+            color);
+        window.draw_line(
+            {point.x + width + pixel, point.y - extraThickness},
+            {point.x + width + pixel, point.y + extraThickness + height},
+            color);
     }
 }

@@ -2,7 +2,7 @@
 
 void testSudokuBoard() {
     LoggingEventListener logger;
-    GraphicEventListener grapher(400, 100, 800, 800);
+    GraphicEventListener grapher(100, 100, 500, 500);
 
     std::vector<EventListener*> eventListeners = {&logger, &grapher};
 
