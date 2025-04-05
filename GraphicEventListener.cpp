@@ -70,13 +70,12 @@ void GraphicEventListener::clusterIn(std::string clusterType, int clusterIndex,
                              {rightmostEdge + pixel, y + blockLength},
                              lineColor);
         }
-        SDL_Delay(0);
     }
     if (clusterType == "col") {
         int x = rowToY.at(clusterIndex);
         for (int pixel = -extraThickness; pixel <= extraThickness; pixel++) {
-            window.draw_line({x, topEdge+pixel}, {x + blockLength, topEdge+pixel},
-                             lineColor);
+            window.draw_line({x, topEdge + pixel},
+                             {x + blockLength, topEdge + pixel}, lineColor);
             window.draw_line({x + pixel, topEdge}, {x + pixel, bottomEdge},
                              lineColor);
             window.draw_line({x, bottomEdge + pixel},
@@ -84,7 +83,6 @@ void GraphicEventListener::clusterIn(std::string clusterType, int clusterIndex,
             window.draw_line({x + blockLength + pixel, topEdge},
                              {x + blockLength + pixel, bottomEdge}, lineColor);
         }
-        SDL_Delay(0);
     }
     if (clusterType == "box") {
         int y = rowToY.at((clusterIndex / 3) * 3);
@@ -102,7 +100,6 @@ void GraphicEventListener::clusterIn(std::string clusterType, int clusterIndex,
                              {x + 3 * blockLength + pixel, y + 3 * blockLength},
                              lineColor);
         }
-        SDL_Delay(0);
     }
 }
 void GraphicEventListener::clusterSolved(std::string clusterType,
