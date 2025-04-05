@@ -2,12 +2,10 @@
 
 Solver::Solver(SudokuBoard sudokuBoard,
                std::vector<EventListener*> eventListeners)
-    : sudokuBoard{&sudokuBoard}, eventListeners{eventListeners} {
+    : sudokuBoard{&sudokuBoard}, eventListeners{eventListeners} {}
 
-    }
-
-bool Solver::isSolved(){
-    for (int i; i < 9; i++) {
+bool Solver::isSolved() {
+    for (int i = 0; i < 9; i++) {
         auto row = sudokuBoard->getRow(i);
         if (!clusterIsSolved(row)) {
             return false;
@@ -18,9 +16,11 @@ bool Solver::isSolved(){
     return true;
 }
 
-bool Solver::improve(int subsetSize){
+bool Solver::improve(int subsetSize) {
     std::for_each(eventListeners.begin(), eventListeners.end(),
-                  [subsetSize](auto& listener) { listener->currentSubsetSize(subsetSize); });
+                  [subsetSize](auto& listener) {
+                      listener->currentSubsetSize(subsetSize);
+                  });
     bool wasChanged = false;
 
     for (int i = 0; i < 9; i++) {
@@ -67,13 +67,12 @@ bool Solver::improve(int subsetSize){
     }
 
     return wasChanged;
-
 }
 
-void Solver::solve(){
+void Solver::solve() {
     int subsetSize = 1;
 
-    while (isSolved()) {
+    while (!isSolved()) {
         int i = 0;
         while (improve(subsetSize)) {
             i++;

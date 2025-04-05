@@ -13,8 +13,6 @@ struct Block {
     int rowPos;
     int colPos;
 
-    std::vector<EventListener*> eventListeners;
-
     bool isSolved();
 
     bool eraseNumbers(std::set<char>& eraser);

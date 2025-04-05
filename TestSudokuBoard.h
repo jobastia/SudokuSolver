@@ -1,6 +1,8 @@
 #pragma once
 
-#include "SudokuBoard.h"
 #include <iostream>
+
+#include "Solver.h"
+#include "SudokuBoard.h"
 
 void testSudokuBoard();

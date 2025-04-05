@@ -2,20 +2,22 @@
 
 void testSudokuBoard() {
     LoggingEventListener logger;
-    GraphicEventListener grapher(100, 100, 500, 500);
+    //GraphicEventListener grapher(100, 100, 500, 500);
 
-    std::vector<EventListener*> eventListeners = {&logger, &grapher};
+    std::vector<EventListener*> eventListeners = {&logger};
 
     SudokuBoard sb(
         "C:\\Users\\jone\\OneDrive - "
         "NTNU\\Dokumenter\\Skole\\V2025\\TDT4102\\Prosjekt_1\\Random "
-        "brett.txt",
-        eventListeners);
+        "brett.txt");
 
     std::cout << "brett:" << std::endl;
     printBoard(sb);
 
-    sb.solve();
+    Solver solver(sb, eventListeners);
+
+    solver.solve();
+    
     sb.legallySolved();
 
     printBoard(sb);
