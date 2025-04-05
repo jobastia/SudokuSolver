@@ -22,7 +22,7 @@ class SudokuBoard {
     std::vector<Block*> getCol(int n) const;
     std::vector<Block*> getBox(int n) const;
 
-    bool improve(int n);
+    bool improve(int subsetSize);
 
     void addEventListener(EventListener* eventListener);
 
@@ -32,6 +32,5 @@ class SudokuBoard {
 
     bool legallySolved() const;
 
-    // SudokuBoard();
     SudokuBoard(std::string filename, std::vector<EventListener*> eventListeners);
 };

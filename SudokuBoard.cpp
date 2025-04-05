@@ -96,16 +96,16 @@ void SudokuBoard::addEventListener(EventListener* eventListener) {
     }
 }
 
-bool SudokuBoard::improve(int n) {
+bool SudokuBoard::improve(int subsetSize) {
     std::for_each(eventListeners.begin(), eventListeners.end(),
-                  [n](auto& listener) { listener->currentSubsetSize(n); });
+                  [subsetSize](auto& listener) { listener->currentSubsetSize(subsetSize); });
     bool wasChanged = false;
 
     for (int i = 0; i < 9; i++) {
         auto row = getRow(i);
         std::for_each(eventListeners.begin(), eventListeners.end(),
                       [i](auto& listener) { listener->clusterIn("row", i); });
-        if (improveCluster(row, n) && !wasChanged)
+        if (improveCluster(row, subsetSize) && !wasChanged)
             wasChanged = true;
         else
             continue;
@@ -119,7 +119,7 @@ bool SudokuBoard::improve(int n) {
         auto col = getCol(i);
         std::for_each(eventListeners.begin(), eventListeners.end(),
                       [i](auto& listener) { listener->clusterIn("col", i); });
-        if (improveCluster(col, n) && !wasChanged)
+        if (improveCluster(col, subsetSize) && !wasChanged)
             wasChanged = true;
         else
             continue;
@@ -133,7 +133,7 @@ bool SudokuBoard::improve(int n) {
         auto box = getBox(i);
         std::for_each(eventListeners.begin(), eventListeners.end(),
                       [i](auto& listener) { listener->clusterIn("box", i); });
-        if (improveCluster(box, n) && !wasChanged)
+        if (improveCluster(box, subsetSize) && !wasChanged)
             wasChanged = true;
         else
             continue;

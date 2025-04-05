@@ -18,40 +18,40 @@ std::set<char> unionOfBlocks(std::vector<Block*>& blocks) {
 
 // Rekursiv hjelpefunksjon som skal returnere alle mulige subsets av en cluster
 // av en gitt størrelse
-void generateSubsets(const std::vector<Block*>& cluster, int n,
+void generateSubsets(const std::vector<Block*>& cluster, int subsetSize,
                      std::vector<Block*>& currentSubset,
                      std::vector<std::vector<Block*>>& allSubsets,
                      std::vector<Block*>::iterator it) {
-    if (currentSubset.size() == n) {
+    if (currentSubset.size() == subsetSize) {
         allSubsets.push_back(currentSubset);
         return;
     }
 
     for (auto i = it; i != cluster.end(); i++) {
         currentSubset.push_back(*i);
-        generateSubsets(cluster, n, currentSubset, allSubsets, std::next(i));
+        generateSubsets(cluster, subsetSize, currentSubset, allSubsets, std::next(i));
         currentSubset.pop_back();
     }
 }
 
 std::vector<std::vector<Block*>> getSubsets(std::vector<Block*> cluster,
-                                            int n) {
+                                            int subsetSize) {
     std::vector<std::vector<Block*>> allSubsets;
     std::vector<Block*> currentSubset;
 
-    generateSubsets(cluster, n, currentSubset, allSubsets, cluster.begin());
+    generateSubsets(cluster, subsetSize, currentSubset, allSubsets, cluster.begin());
     return allSubsets;
 }
 
-bool improveCluster(std::vector<Block*>& cluster, int n) {
+bool improveCluster(std::vector<Block*>& cluster, int subsetSize) {
     if (clusterIsSolved(cluster)) return false;
 
     bool wasChanged = false;
 
-    auto allSubsets = getSubsets(cluster, n);
+    auto allSubsets = getSubsets(cluster, subsetSize);
     for (auto subSet : allSubsets) {
         std::set<char> unionSet = unionOfBlocks(subSet);
-        if (unionSet.size() == n) {
+        if (unionSet.size() == subsetSize) {
             for (Block* block : cluster) {
                 if (std::find(subSet.begin(), subSet.end(), block) ==
                     subSet.end()) {
