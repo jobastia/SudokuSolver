@@ -60,16 +60,18 @@ bool Solver::improve(int subsetSize) {
                       [i, this](auto& listener) {
                           listener->clusterIn("row", i, solvedBlocks);
                       });
-        if (improveCluster(row, subsetSize) && !wasChanged)
+        if (improveCluster(row, subsetSize) && !wasChanged) {
             wasChanged = true;
-        else
+            updateSolvedBlocks();
+        } else {
+            updateSolvedBlocks();
             continue;
+        }
         if (clusterIsSolved(row)) {
             std::for_each(
                 eventListeners.begin(), eventListeners.end(),
                 [i](auto& listener) { listener->clusterSolved("row", i); });
         }
-        updateSolvedBlocks();
     }
     for (int i = 0; i < 9; i++) {
         auto col = sudokuBoard->getCol(i);
@@ -77,10 +79,13 @@ bool Solver::improve(int subsetSize) {
                       [i, this](auto& listener) {
                           listener->clusterIn("col", i, solvedBlocks);
                       });
-        if (improveCluster(col, subsetSize) && !wasChanged)
+        if (improveCluster(col, subsetSize) && !wasChanged) {
             wasChanged = true;
-        else
+            updateSolvedBlocks();
+        } else {
+            updateSolvedBlocks();
             continue;
+        }
         if (clusterIsSolved(col)) {
             std::for_each(
                 eventListeners.begin(), eventListeners.end(),
@@ -94,16 +99,18 @@ bool Solver::improve(int subsetSize) {
                       [i, this](auto& listener) {
                           listener->clusterIn("box", i, solvedBlocks);
                       });
-        if (improveCluster(box, subsetSize) && !wasChanged)
+        if (improveCluster(box, subsetSize) && !wasChanged) {
             wasChanged = true;
-        else
+            updateSolvedBlocks();
+        } else {
+            updateSolvedBlocks();
             continue;
+        }
         if (clusterIsSolved(box)) {
             std::for_each(
                 eventListeners.begin(), eventListeners.end(),
                 [i](auto& listener) { listener->clusterSolved("box", i); });
         }
-        updateSolvedBlocks();
     }
 
     return wasChanged;
