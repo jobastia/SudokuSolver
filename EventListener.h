@@ -1,8 +1,10 @@
 #pragma once
 #include <algorithm>
+#include <chrono>
 #include <iostream>
 #include <map>
 #include <string>
+#include <thread>
 
 #include "AnimationWindow.h"
 #include "Block.h"
@@ -39,6 +41,11 @@ class GraphicEventListener : public EventListener {
     TDT4102::AnimationWindow window;
     int windowWidth;
     int windowHeight;
+    int blockLength;
+    int topEdge;
+    int bottomEdge;
+    int leftmostEdge;
+    int rightmostEdge;
 
     std::map<int, int> colToX;
     std::map<int, int> rowToY;
