@@ -92,7 +92,21 @@ void GraphicEventListener::blockSolved(int row, int collumn, char number,
 }
 void GraphicEventListener::currentSubsetSize(int n) {}
 void GraphicEventListener::boardSolved(std::vector<Block*>& solvedBlocks) {
-    drawBoard(solvedBlocks);
+    for (int i = 0; i < 3; i++) {
+        drawBoard(solvedBlocks);
+
+        drawFatRectangle(window, {leftmostEdge, topEdge}, 9 * blockLength,
+                         9 * blockLength, blockSolvedColor, 4);
+
+        SDL_Delay(400);
+
+        drawBoard(solvedBlocks);
+
+        SDL_Delay(400);
+    }
+
+    drawFatRectangle(window, {leftmostEdge, topEdge}, 9 * blockLength,
+                     9 * blockLength, blockSolvedColor, 4);
 
     window.wait_for_close();
 }
