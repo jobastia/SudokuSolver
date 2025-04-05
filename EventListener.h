@@ -74,5 +74,5 @@ class GraphicEventListener : public EventListener {
                          int height = 500);
 };
 
-void drawEmptyBoard(TDT4102::AnimationWindow& window, int width, int height);
+void drawFatRectangle(TDT4102::AnimationWindow& window, TDT4102::Point topLeft, int width, int height, TDT4102::Color color, int extraThickness = 2);
 

@@ -42,8 +42,8 @@ void GraphicEventListener::drawBoard(std::vector<Block*>& solvedBlocks) {
 
         unsigned int fontSize = (35 * blockLength / 41);
 
-        window.draw_text({x, y}, std::to_string(number), numberColor,
-                         fontSize, font);
+        window.draw_text({x, y}, std::to_string(number), numberColor, fontSize,
+                         font);
     }
 }
 
@@ -54,55 +54,27 @@ void GraphicEventListener::clusterIn(std::string clusterType, int clusterIndex,
                                      std::vector<Block*>& solvedBlocks) {
     drawBoard(solvedBlocks);
 
-    int extraThickness = 3;
-
     if (clusterType == "row") {
         int y = rowToY.at(clusterIndex);
-        for (int pixel = -extraThickness; pixel <= extraThickness; pixel++) {
-            window.draw_line({leftmostEdge, y + pixel},
-                             {rightmostEdge, y + pixel}, clusterInColor);
-            window.draw_line({leftmostEdge + pixel, y},
-                             {leftmostEdge + pixel, y + blockLength},
-                             clusterInColor);
-            window.draw_line({leftmostEdge, y + blockLength + pixel},
-                             {rightmostEdge, y + blockLength + pixel},
-                             clusterInColor);
-            window.draw_line({rightmostEdge + pixel, y},
-                             {rightmostEdge + pixel, y + blockLength},
-                             clusterInColor);
-        }
+
+        drawFatRectangle(window, {leftmostEdge, y}, blockLength * 9,
+                         blockLength, clusterInColor, 3);
     }
     if (clusterType == "col") {
         int x = rowToY.at(clusterIndex);
-        for (int pixel = -extraThickness; pixel <= extraThickness; pixel++) {
-            window.draw_line({x, topEdge + pixel},
-                             {x + blockLength, topEdge + pixel}, clusterInColor);
-            window.draw_line({x + pixel, topEdge}, {x + pixel, bottomEdge},
-                clusterInColor);
-            window.draw_line({x, bottomEdge + pixel},
-                             {x + blockLength, bottomEdge + pixel}, clusterInColor);
-            window.draw_line({x + blockLength + pixel, topEdge},
-                             {x + blockLength + pixel, bottomEdge}, clusterInColor);
-        }
+
+        drawFatRectangle(window, {x, topEdge}, blockLength, blockLength * 9,
+                         clusterInColor, 3);
     }
     if (clusterType == "box") {
         int y = rowToY.at((clusterIndex / 3) * 3);
         int x = colToX.at((clusterIndex % 3) * 3);
 
-        for (int pixel = -extraThickness; pixel <= extraThickness; pixel++) {
-            window.draw_line({x, y + pixel}, {x + 3 * blockLength, y + pixel},
-                clusterInColor);
-            window.draw_line({x + pixel, y}, {x + pixel, y + 3 * blockLength},
-                clusterInColor);
-            window.draw_line({x, y + 3 * blockLength + pixel},
-                             {x + 3 * blockLength, y + 3 * blockLength + pixel},
-                             clusterInColor);
-            window.draw_line({x + 3 * blockLength + pixel, y},
-                             {x + 3 * blockLength + pixel, y + 3 * blockLength},
-                             clusterInColor);
-        }
+        drawFatRectangle(window, {x, y}, blockLength * 3, blockLength * 3,
+                         clusterInColor, 3);
     }
 }
+
 void GraphicEventListener::clusterSolved(std::string clusterType,
                                          int clusterIndex) {}
 void GraphicEventListener::blockSolved(int row, int collumn, char number,
@@ -113,16 +85,8 @@ void GraphicEventListener::blockSolved(int row, int collumn, char number,
 
     int extraThickness = 2;
 
-    for (int pixel = -extraThickness; pixel <= extraThickness; pixel++) {
-        window.draw_line({x, y + pixel}, {x + blockLength, y + pixel},
-                         blockSolvedColor);
-        window.draw_line({x + pixel, y}, {x + pixel, y + blockLength},
-            blockSolvedColor);
-        window.draw_line({x, y + blockLength + pixel},
-                         {x + blockLength, y + blockLength + pixel}, blockSolvedColor);
-        window.draw_line({x + blockLength + pixel, y},
-                         {x + blockLength + pixel, y + blockLength}, blockSolvedColor);
-    }
+    drawFatRectangle(window, {x, y}, blockLength, blockLength, blockSolvedColor,
+                     2);
 
     SDL_Delay(100);
 }
@@ -133,19 +97,17 @@ void GraphicEventListener::boardSolved(std::vector<Block*>& solvedBlocks) {
     window.wait_for_close();
 }
 
-void drawEmptyBoard(TDT4102::AnimationWindow& window, int width, int height) {
-    int blockLength = (6 * std::min(height, width) / 8) / 9;
-
-    int topEdge = static_cast<int>(height / 2 - blockLength * 4.5);
-    int bottomEdge = static_cast<int>(height / 2 + blockLength * 4.5);
-
-    int leftmostEdge = static_cast<int>(width / 2 - blockLength * 4.5);
-    int rightmostEdge = static_cast<int>(width / 2 + blockLength * 4.5);
-
-    for (int y = topEdge; y <= bottomEdge; y += blockLength) {
-        window.draw_line({leftmostEdge, y}, {rightmostEdge, y});
-    }
-    for (int x = leftmostEdge; x <= rightmostEdge; x += blockLength) {
-        window.draw_line({x, topEdge}, {x, bottomEdge});
+void drawFatRectangle(TDT4102::AnimationWindow& window, TDT4102::Point point,
+                      int width, int height, TDT4102::Color color,
+                      int extraThickness) {
+    for (int pixel = -extraThickness; pixel <= extraThickness; pixel++) {
+        window.draw_line({point.x, point.y + pixel},
+                         {point.x + width, point.y + pixel}, color);
+        window.draw_line({point.x + pixel, point.y},
+                         {point.x + pixel, point.y + height}, color);
+        window.draw_line({point.x, point.y + height + pixel},
+                         {point.x + width, point.y + height + pixel}, color);
+        window.draw_line({point.x + width + pixel, point.y},
+                         {point.x + width + pixel, point.y + height}, color);
     }
 }
