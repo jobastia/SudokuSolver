@@ -15,5 +15,5 @@ class Solver {
 
    public:
     void solve();
-    Solver(SudokuBoard sudokuBoard, std::vector<EventListener*> eventListeners);
+    Solver(SudokuBoard* sudokuBoard, std::vector<EventListener*> eventListeners);
 };

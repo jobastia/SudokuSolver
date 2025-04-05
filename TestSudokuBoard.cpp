@@ -2,7 +2,7 @@
 
 void testSudokuBoard() {
     LoggingEventListener logger;
-    //GraphicEventListener grapher(100, 100, 500, 500);
+    GraphicEventListener grapher(100, 100, 500, 500);
 
     std::vector<EventListener*> eventListeners = {&logger};
 
@@ -14,7 +14,7 @@ void testSudokuBoard() {
     std::cout << "brett:" << std::endl;
     printBoard(sb);
 
-    Solver solver(sb, eventListeners);
+    Solver solver(&sb, eventListeners);
 
     solver.solve();
     

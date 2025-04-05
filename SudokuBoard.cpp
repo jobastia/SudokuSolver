@@ -28,9 +28,17 @@ SudokuBoard::SudokuBoard(std::string filename) {
     ifs.close();
 }
 
-std::vector<Block*> SudokuBoard::getRow(int n) const { return board.at(n); }
+std::vector<Block*> SudokuBoard::getRow(int n) const {
+    if (n < 0 || n >= 9) {
+        throw std::out_of_range("Index out of bounds in getRow/getCol/getBox");
+    }
+    return board.at(n);
+}
 
 std::vector<Block*> SudokuBoard::getCol(int n) const {
+    if (n < 0 || n >= 9) {
+        throw std::out_of_range("Index out of bounds in getRow/getCol/getBox");
+    }
     std::vector<Block*> col;
     for (int i = 0; i < board.size(); i++) {
         col.push_back(board.at(i).at(n));
@@ -39,6 +47,9 @@ std::vector<Block*> SudokuBoard::getCol(int n) const {
 }
 
 std::vector<Block*> SudokuBoard::getBox(int n) const {
+    if (n < 0 || n >= 9) {
+        throw std::out_of_range("Index out of bounds in getRow/getCol/getBox");
+    }
     std::vector<Block*> box;
     int startrow = (n / 3) * 3;
     int startcol = (n % 3) * 3;

@@ -1,8 +1,8 @@
 #include "Solver.h"
 
-Solver::Solver(SudokuBoard sudokuBoard,
+Solver::Solver(SudokuBoard* sudokuBoard,
                std::vector<EventListener*> eventListeners)
-    : sudokuBoard{&sudokuBoard}, eventListeners{eventListeners} {}
+    : sudokuBoard{sudokuBoard}, eventListeners{eventListeners} {}
 
 bool Solver::isSolved() {
     for (int i = 0; i < 9; i++) {
