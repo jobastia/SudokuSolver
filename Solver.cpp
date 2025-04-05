@@ -2,7 +2,21 @@
 
 Solver::Solver(SudokuBoard* sudokuBoard,
                std::vector<EventListener*> eventListeners)
-    : sudokuBoard{sudokuBoard}, eventListeners{eventListeners} {}
+    : sudokuBoard{sudokuBoard}, eventListeners{eventListeners} {
+    std::vector<Block*> solvedBlocks;
+
+    for (auto row : sudokuBoard->getBoard()) {
+        for (auto block : row) {
+            if ((block->possibleNumbers).size() == 1) {
+                solvedBlocks.push_back(block);
+            }
+        }
+    }
+    std::for_each(eventListeners.begin(), eventListeners.end(),
+                  [&solvedBlocks](auto listener) {
+                      listener->boardCreated(solvedBlocks);
+                  });
+}
 
 bool Solver::isSolved() {
     for (int i = 0; i < 9; i++) {

@@ -19,6 +19,8 @@ class SudokuBoard {
     std::vector<Block*> getCol(int n) const;
     std::vector<Block*> getBox(int n) const;
 
+    std::vector<std::vector<Block*>> getBoard() {return board;}
+
     friend void printBoard(SudokuBoard board);
 
     bool legallySolved() const;

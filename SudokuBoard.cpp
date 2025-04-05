@@ -1,7 +1,6 @@
 #include "SudokuBoard.h"
 
 SudokuBoard::SudokuBoard(std::string filename) {
-    std::vector<Block*> solvedBlocks;
 
     board.reserve(9);
     for (auto row : board) row.reserve(9);
@@ -18,7 +17,6 @@ SudokuBoard::SudokuBoard(std::string filename) {
             ifs >> value;
             if (value != 0) {
                 Block* solvedBlock = new Block(value, i, j);
-                solvedBlocks.push_back(solvedBlock);
                 row.push_back(solvedBlock);
             } else
                 row.push_back(new Block(i, j));

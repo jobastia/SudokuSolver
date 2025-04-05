@@ -1,8 +1,8 @@
 #include "EventListener.h"
 
-void LoggingEventListener::boardCreated(std::vector<Block*>& SolvedBlocks) {
+void LoggingEventListener::boardCreated(std::vector<Block*>& solvedBlocks) {
     std::cout << "Board Created!" << std::endl;
-    for (auto block : SolvedBlocks) {
+    for (auto block : solvedBlocks) {
         int number = static_cast<int>(*((block->possibleNumbers).begin()));
         std::cout << "row: " << block->rowPos << " col: " << block->colPos
                   << " Number: " << number << std::endl;

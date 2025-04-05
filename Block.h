@@ -3,8 +3,6 @@
 #include <set>
 #include <vector>
 
-#include "EventListener.h"
-
 class EventListener;
 
 struct Block {

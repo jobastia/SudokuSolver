@@ -12,7 +12,7 @@ struct Block;
 class EventListener {
    private:
    public:
-    virtual void boardCreated(std::vector<Block*>& SolvedBlocks) = 0;
+    virtual void boardCreated(std::vector<Block*>& solvedBlocks) = 0;
     virtual void clusterIn(std::string clusterType, int clusterIndex) = 0;
     virtual void clusterSolved(std::string clusterType, int clusterIndex) = 0;
     virtual void blockSolved(int row, int collumn, char number) = 0;
@@ -22,7 +22,7 @@ class EventListener {
 
 class LoggingEventListener : public EventListener {
    public:
-    void boardCreated(std::vector<Block*>& SolvedBlocks) override; 
+    void boardCreated(std::vector<Block*>& solvedBlocks) override; 
     void clusterIn(std::string clusterType, int clusterIndex) override; 
     void clusterSolved(std::string clusterType, int clusterIndex) override; 
     void blockSolved(int row, int column, char number) override; 
@@ -39,8 +39,12 @@ class GraphicEventListener : public EventListener {
     std::map<int, int> colToX;
     std::map<int, int> rowToY;
 
+    std::vector<Block*> solvedBlocks;
+
+    void drawCurrentBoard();
+
    public:
-    void boardCreated(std::vector<Block*>& SolvedBlocks) override;
+    void boardCreated(std::vector<Block*>& solvedBlocks) override;
     void clusterIn(std::string clusterType, int clusterIndex) override;
     void clusterSolved(std::string clusterType, int clusterIndex) override;
     void blockSolved(int row, int collumn, char number) override;
@@ -50,3 +54,5 @@ class GraphicEventListener : public EventListener {
     GraphicEventListener(int x = 100, int y = 100, int width = 500,
                          int height = 500);
 };
+
+void drawEmptyBoard(TDT4102::AnimationWindow& window, int width, int height);

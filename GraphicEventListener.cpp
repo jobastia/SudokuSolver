@@ -24,8 +24,23 @@ GraphicEventListener::GraphicEventListener(int x, int y, int width, int height)
     }
 }
 
-void GraphicEventListener::boardCreated(std::vector<Block*>& SolvedBlocks) {
-    for (auto block : SolvedBlocks) {
+void GraphicEventListener::drawCurrentBoard(){
+    window.next_frame();
+
+    drawEmptyBoard(window, windowWidth, windowHeight);
+    
+    for (auto block : solvedBlocks) {
+        int x = colToX.at(block->colPos);
+        int y = rowToY.at(block->rowPos);
+
+        int number = static_cast<int>(*((block->possibleNumbers).begin()));
+
+        window.draw_text({x, y}, std::to_string(number));
+    }
+}
+
+void GraphicEventListener::boardCreated(std::vector<Block*>& solvedBlocks) {
+    for (auto block : solvedBlocks) {
         int x = colToX.at(block->colPos);
         int y = rowToY.at(block->rowPos);
 
@@ -46,6 +61,8 @@ void GraphicEventListener::blockSolved(int row, int collumn, char number) {
 }
 void GraphicEventListener::currentSubsetSize(int n) {}
 void GraphicEventListener::boardSolved() { window.wait_for_close(); }
+
+
 
 void drawEmptyBoard(TDT4102::AnimationWindow& window, int width, int height) {
     int blockLength = (6 * std::min(height, width) / 8) / 9;
