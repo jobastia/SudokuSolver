@@ -13,21 +13,25 @@ class EventListener {
    private:
    public:
     virtual void boardCreated(std::vector<Block*>& solvedBlocks) = 0;
-    virtual void clusterIn(std::string clusterType, int clusterIndex) = 0;
+    virtual void clusterIn(std::string clusterType, int clusterIndex,
+                           std::vector<Block*>& solvedBlocks) = 0;
     virtual void clusterSolved(std::string clusterType, int clusterIndex) = 0;
-    virtual void blockSolved(int row, int collumn, char number) = 0;
+    virtual void blockSolved(int row, int collumn, char number,
+                             std::vector<Block*>& solvedBlocks) = 0;
     virtual void currentSubsetSize(int n) = 0;
-    virtual void boardSolved() = 0;
+    virtual void boardSolved(std::vector<Block*>& solvedBlocks) = 0;
 };
 
 class LoggingEventListener : public EventListener {
    public:
-    void boardCreated(std::vector<Block*>& solvedBlocks) override; 
-    void clusterIn(std::string clusterType, int clusterIndex) override; 
-    void clusterSolved(std::string clusterType, int clusterIndex) override; 
-    void blockSolved(int row, int column, char number) override; 
-    void currentSubsetSize(int n) override; 
-    void boardSolved() override; 
+    void boardCreated(std::vector<Block*>& solvedBlocks) override;
+    void clusterIn(std::string clusterType, int clusterIndex,
+                   std::vector<Block*>& solvedBlocks) override;
+    void clusterSolved(std::string clusterType, int clusterIndex) override;
+    void blockSolved(int row, int column, char number,
+                     std::vector<Block*>& solvedBlocks) override;
+    void currentSubsetSize(int n) override;
+    void boardSolved(std::vector<Block*>& solvedBlocks) override;
 };
 
 class GraphicEventListener : public EventListener {
@@ -39,17 +43,17 @@ class GraphicEventListener : public EventListener {
     std::map<int, int> colToX;
     std::map<int, int> rowToY;
 
-    std::vector<Block*> solvedBlocks;
-
-    void drawCurrentBoard();
+    void drawBoard(std::vector<Block*>& solvedBlocks);
 
    public:
     void boardCreated(std::vector<Block*>& solvedBlocks) override;
-    void clusterIn(std::string clusterType, int clusterIndex) override;
+    void clusterIn(std::string clusterType, int clusterIndex,
+                   std::vector<Block*>& solvedBlocks) override;
     void clusterSolved(std::string clusterType, int clusterIndex) override;
-    void blockSolved(int row, int collumn, char number) override;
+    void blockSolved(int row, int collumn, char number,
+                     std::vector<Block*>& solvedBlocks) override;
     void currentSubsetSize(int n) override;
-    void boardSolved() override;
+    void boardSolved(std::vector<Block*>& solvedBlocks) override;
 
     GraphicEventListener(int x = 100, int y = 100, int width = 500,
                          int height = 500);

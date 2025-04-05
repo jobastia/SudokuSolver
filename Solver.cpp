@@ -3,8 +3,6 @@
 Solver::Solver(SudokuBoard* sudokuBoard,
                std::vector<EventListener*> eventListeners)
     : sudokuBoard{sudokuBoard}, eventListeners{eventListeners} {
-    std::vector<Block*> solvedBlocks;
-
     for (auto row : sudokuBoard->getBoard()) {
         for (auto block : row) {
             if ((block->possibleNumbers).size() == 1) {
@@ -12,10 +10,9 @@ Solver::Solver(SudokuBoard* sudokuBoard,
             }
         }
     }
-    std::for_each(eventListeners.begin(), eventListeners.end(),
-                  [&solvedBlocks](auto listener) {
-                      listener->boardCreated(solvedBlocks);
-                  });
+    std::for_each(
+        eventListeners.begin(), eventListeners.end(),
+        [this](auto listener) { listener->boardCreated(solvedBlocks); });
 }
 
 bool Solver::isSolved() {
@@ -25,8 +22,9 @@ bool Solver::isSolved() {
             return false;
         }
     }
-    std::for_each(eventListeners.begin(), eventListeners.end(),
-                  [](auto& listener) { listener->boardSolved(); });
+    std::for_each(
+        eventListeners.begin(), eventListeners.end(),
+        [this](auto& listener) { listener->boardSolved(solvedBlocks); });
     return true;
 }
 
@@ -40,7 +38,9 @@ bool Solver::improve(int subsetSize) {
     for (int i = 0; i < 9; i++) {
         auto row = sudokuBoard->getRow(i);
         std::for_each(eventListeners.begin(), eventListeners.end(),
-                      [i](auto& listener) { listener->clusterIn("row", i); });
+                      [i, this](auto& listener) {
+                          listener->clusterIn("row", i, solvedBlocks);
+                      });
         if (improveCluster(row, subsetSize) && !wasChanged)
             wasChanged = true;
         else
@@ -54,7 +54,9 @@ bool Solver::improve(int subsetSize) {
     for (int i = 0; i < 9; i++) {
         auto col = sudokuBoard->getCol(i);
         std::for_each(eventListeners.begin(), eventListeners.end(),
-                      [i](auto& listener) { listener->clusterIn("col", i); });
+                      [i, this](auto& listener) {
+                          listener->clusterIn("col", i, solvedBlocks);
+                      });
         if (improveCluster(col, subsetSize) && !wasChanged)
             wasChanged = true;
         else
@@ -68,7 +70,9 @@ bool Solver::improve(int subsetSize) {
     for (int i = 0; i < 9; i++) {
         auto box = sudokuBoard->getBox(i);
         std::for_each(eventListeners.begin(), eventListeners.end(),
-                      [i](auto& listener) { listener->clusterIn("box", i); });
+                      [i, this](auto& listener) {
+                          listener->clusterIn("box", i, solvedBlocks);
+                      });
         if (improveCluster(box, subsetSize) && !wasChanged)
             wasChanged = true;
         else

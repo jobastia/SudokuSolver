@@ -12,19 +12,17 @@ GraphicEventListener::GraphicEventListener(int x, int y, int width, int height)
 
     int row = 0;
     for (int y = topEdge; y <= bottomEdge; y += blockLength) {
-        window.draw_line({leftmostEdge, y}, {rightmostEdge, y});
         rowToY[row] = y;
         row++;
     }
     int col = 0;
     for (int x = leftmostEdge; x <= rightmostEdge; x += blockLength) {
-        window.draw_line({x, topEdge}, {x, bottomEdge});
         colToX[col] = x;
         col++;
     }
 }
 
-void GraphicEventListener::drawCurrentBoard(){
+void GraphicEventListener::drawBoard(std::vector<Block*>& solvedBlocks){
     window.next_frame();
 
     drawEmptyBoard(window, windowWidth, windowHeight);
@@ -40,27 +38,21 @@ void GraphicEventListener::drawCurrentBoard(){
 }
 
 void GraphicEventListener::boardCreated(std::vector<Block*>& solvedBlocks) {
-    for (auto block : solvedBlocks) {
-        int x = colToX.at(block->colPos);
-        int y = rowToY.at(block->rowPos);
-
-        int number = static_cast<int>(*((block->possibleNumbers).begin()));
-
-        window.draw_text({x, y}, std::to_string(number));
-    }
+    drawBoard(solvedBlocks);
 }
 void GraphicEventListener::clusterIn(std::string clusterType,
-                                     int clusterIndex) {}
+                                     int clusterIndex, std::vector<Block*>& solvedBlocks) {
+                                        drawBoard(solvedBlocks);
+                                        //Funksjonalitet som tegner rundt clusteren oransj?
+                                     }
 void GraphicEventListener::clusterSolved(std::string clusterType,
                                          int clusterIndex) {}
-void GraphicEventListener::blockSolved(int row, int collumn, char number) {
-    int x = colToX.at(collumn);
-    int y = rowToY.at(row);
-
-    window.draw_text({x, y}, std::to_string(static_cast<int>(number)));
+void GraphicEventListener::blockSolved(int row, int collumn, char number, std::vector<Block*>& solvedBlocks) {
+    drawBoard(solvedBlocks);
+    //Funksjonalitet som gjør blocken grønn og venter
 }
 void GraphicEventListener::currentSubsetSize(int n) {}
-void GraphicEventListener::boardSolved() { window.wait_for_close(); }
+void GraphicEventListener::boardSolved(std::vector<Block*>& solvedBlocks) { window.wait_for_close(); }
 
 
 

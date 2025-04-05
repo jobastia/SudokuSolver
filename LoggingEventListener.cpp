@@ -8,8 +8,8 @@ void LoggingEventListener::boardCreated(std::vector<Block*>& solvedBlocks) {
                   << " Number: " << number << std::endl;
     }
 }
-void LoggingEventListener::clusterIn(std::string clusterType,
-                                     int clusterIndex) {
+void LoggingEventListener::clusterIn(std::string clusterType, int clusterIndex,
+                                     std::vector<Block*>& solvedBlocks) {
     std::cout << "Cluster In: " << clusterType << " at index " << clusterIndex
               << std::endl;
 }
@@ -20,7 +20,8 @@ void LoggingEventListener::clusterSolved(std::string clusterType,
               << clusterIndex << std::endl;
 }
 
-void LoggingEventListener::blockSolved(int row, int column, char number) {
+void LoggingEventListener::blockSolved(int row, int column, char number,
+                                       std::vector<Block*>& solvedBlocks) {
     std::cout << "Block Solved: (" << row << ", " << column << ") "
               << "Set to: " << static_cast<int>(number) << std::endl;
 }
@@ -29,6 +30,6 @@ void LoggingEventListener::currentSubsetSize(int n) {
     std::cout << "Current Subset Size: " << n << std::endl;
 }
 
-void LoggingEventListener::boardSolved() {
+void LoggingEventListener::boardSolved(std::vector<Block*>& solvedBlocks) {
     std::cout << "Board solved!" << std::endl;
 }

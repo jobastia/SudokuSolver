@@ -14,6 +14,8 @@ class Solver {
     bool isSolved();
 
    public:
+    std::vector<Block*> solvedBlocks;
+
     void solve();
     Solver(SudokuBoard* sudokuBoard, std::vector<EventListener*> eventListeners);
 };
