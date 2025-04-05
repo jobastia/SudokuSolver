@@ -9,7 +9,7 @@ GraphicEventListener::GraphicEventListener(int x, int y, int width, int height)
     int bottomEdge = static_cast<int>(height / 2 + blockLength * 4.5);
     int leftmostEdge = static_cast<int>(width / 2 - blockLength * 4.5);
     int rightmostEdge = static_cast<int>(width / 2 + blockLength * 4.5);
-    
+
     int row = 0;
     for (int y = topEdge; y <= bottomEdge; y += blockLength) {
         window.draw_line({leftmostEdge, y}, {rightmostEdge, y});
@@ -33,15 +33,19 @@ void GraphicEventListener::boardCreated(std::vector<Block*>& SolvedBlocks) {
 
         window.draw_text({x, y}, std::to_string(number));
     }
-    window.wait_for_close();
 }
 void GraphicEventListener::clusterIn(std::string clusterType,
                                      int clusterIndex) {}
 void GraphicEventListener::clusterSolved(std::string clusterType,
                                          int clusterIndex) {}
-void GraphicEventListener::blockSolved(int row, int collumn, char number) {}
+void GraphicEventListener::blockSolved(int row, int collumn, char number) {
+    int x = colToX.at(collumn);
+    int y = rowToY.at(row);
+
+    window.draw_text({x, y}, std::to_string(static_cast<int>(number)));
+}
 void GraphicEventListener::currentSubsetSize(int n) {}
-void GraphicEventListener::boardSolved() {}
+void GraphicEventListener::boardSolved() { window.wait_for_close(); }
 
 void drawEmptyBoard(TDT4102::AnimationWindow& window, int width, int height) {
     int blockLength = (6 * std::min(height, width) / 8) / 9;

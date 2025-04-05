@@ -26,6 +26,13 @@ SudokuBoard::SudokuBoard(std::string filename, std::vector<EventListener*> event
         board.push_back(row);
     }
     ifs.close();
+
+    for (auto row : board) {
+        for (auto block : row) {
+            block->eventListeners = eventListeners;
+        }
+    }
+
     std::for_each(eventListeners.begin(), eventListeners.end(),
                   [&solvedBlocks](auto listener) {
                       listener->boardCreated(solvedBlocks);
