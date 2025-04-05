@@ -1,6 +1,6 @@
 #include "SudokuBoard.h"
 
-SudokuBoard::SudokuBoard(std::string filename, std::vector<EventListener*> eventListeners): eventListeners{eventListeners} {
+SudokuBoard::SudokuBoard(std::string filename) {
     std::vector<Block*> solvedBlocks;
 
     board.reserve(9);
@@ -26,28 +26,6 @@ SudokuBoard::SudokuBoard(std::string filename, std::vector<EventListener*> event
         board.push_back(row);
     }
     ifs.close();
-
-    for (auto row : board) {
-        for (auto block : row) {
-            block->eventListeners = eventListeners;
-        }
-    }
-
-    std::for_each(eventListeners.begin(), eventListeners.end(),
-                  [&solvedBlocks](auto listener) {
-                      listener->boardCreated(solvedBlocks);
-                  });
-}
-
-bool SudokuBoard::isSolved() const {
-    for (auto row : board) {
-        if (!clusterIsSolved(row)) {
-            return false;
-        }
-    }
-    std::for_each(eventListeners.begin(), eventListeners.end(),
-                  [](auto& listener) { listener->boardSolved(); });
-    return true;
 }
 
 std::vector<Block*> SudokuBoard::getRow(int n) const { return board.at(n); }
@@ -84,88 +62,6 @@ void printBoard(SudokuBoard sb) {
             }
         }
         std::cout << std::endl;
-    }
-}
-
-void SudokuBoard::addEventListener(EventListener* eventListener) {
-    eventListeners.push_back(eventListener);
-    for (auto row : board) {
-        for (auto block : row) {
-            block->eventListeners.push_back(eventListener);
-        }
-    }
-}
-
-bool SudokuBoard::improve(int subsetSize) {
-    std::for_each(eventListeners.begin(), eventListeners.end(),
-                  [subsetSize](auto& listener) { listener->currentSubsetSize(subsetSize); });
-    bool wasChanged = false;
-
-    for (int i = 0; i < 9; i++) {
-        auto row = getRow(i);
-        std::for_each(eventListeners.begin(), eventListeners.end(),
-                      [i](auto& listener) { listener->clusterIn("row", i); });
-        if (improveCluster(row, subsetSize) && !wasChanged)
-            wasChanged = true;
-        else
-            continue;
-        if (clusterIsSolved(row)) {
-            std::for_each(
-                eventListeners.begin(), eventListeners.end(),
-                [i](auto& listener) { listener->clusterSolved("row", i); });
-        }
-    }
-    for (int i = 0; i < 9; i++) {
-        auto col = getCol(i);
-        std::for_each(eventListeners.begin(), eventListeners.end(),
-                      [i](auto& listener) { listener->clusterIn("col", i); });
-        if (improveCluster(col, subsetSize) && !wasChanged)
-            wasChanged = true;
-        else
-            continue;
-        if (clusterIsSolved(col)) {
-            std::for_each(
-                eventListeners.begin(), eventListeners.end(),
-                [i](auto& listener) { listener->clusterSolved("col", i); });
-        }
-    }
-    for (int i = 0; i < 9; i++) {
-        auto box = getBox(i);
-        std::for_each(eventListeners.begin(), eventListeners.end(),
-                      [i](auto& listener) { listener->clusterIn("box", i); });
-        if (improveCluster(box, subsetSize) && !wasChanged)
-            wasChanged = true;
-        else
-            continue;
-        if (clusterIsSolved(box)) {
-            std::for_each(
-                eventListeners.begin(), eventListeners.end(),
-                [i](auto& listener) { listener->clusterSolved("box", i); });
-        }
-    }
-
-    return wasChanged;
-}
-
-void SudokuBoard::solve() {
-    int subsetSize = 1;
-
-    while (!isSolved()) {
-        int i = 0;
-        while (improve(subsetSize)) {
-            i++;
-            std::cout << i << std::endl;
-        }
-        if (i == 0 || subsetSize == 1) {
-            subsetSize++;
-        } else {
-            subsetSize = 1;
-        }
-        if (subsetSize == 9) {
-            std::cout << "kuk!" << std::endl;
-            // kall på en guess solution
-            return;
-        }
     }
 }
 

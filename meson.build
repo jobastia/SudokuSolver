@@ -33,6 +33,7 @@ exe = executable(
 'ImproveCluster.cpp',
 'InputWindow.cpp',
 'LoggingEventListener.cpp',
+'Solver.cpp',
 'SudokuBoard.cpp',
 'TestImproveCluster.cpp',
 'TestSudokuBoard.cpp',
