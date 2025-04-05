@@ -12,6 +12,7 @@ class Solver {
 
     bool improve(int subsetSize);
     bool isSolved();
+    void updateSolvedBlocks();
 
    public:
     std::vector<Block*> solvedBlocks;

@@ -28,6 +28,25 @@ bool Solver::isSolved() {
     return true;
 }
 
+void Solver::updateSolvedBlocks() {
+    for (auto row : sudokuBoard->getBoard()) {
+        for (auto block : row) {
+            bool isNew = std::find(solvedBlocks.begin(), solvedBlocks.end(),
+                                   block) == solvedBlocks.end();
+            if ((block->possibleNumbers).size() == 1 && isNew) {
+                solvedBlocks.push_back(block);
+                std::for_each(eventListeners.begin(), eventListeners.end(),
+                              [this, block](auto listener) {
+                                  listener->blockSolved(
+                                      block->rowPos, block->colPos,
+                                      *(block->possibleNumbers).begin(),
+                                      solvedBlocks);
+                              });
+            }
+        }
+    }
+}
+
 bool Solver::improve(int subsetSize) {
     std::for_each(eventListeners.begin(), eventListeners.end(),
                   [subsetSize](auto& listener) {
@@ -50,6 +69,7 @@ bool Solver::improve(int subsetSize) {
                 eventListeners.begin(), eventListeners.end(),
                 [i](auto& listener) { listener->clusterSolved("row", i); });
         }
+        updateSolvedBlocks();
     }
     for (int i = 0; i < 9; i++) {
         auto col = sudokuBoard->getCol(i);
@@ -66,6 +86,7 @@ bool Solver::improve(int subsetSize) {
                 eventListeners.begin(), eventListeners.end(),
                 [i](auto& listener) { listener->clusterSolved("col", i); });
         }
+        updateSolvedBlocks();
     }
     for (int i = 0; i < 9; i++) {
         auto box = sudokuBoard->getBox(i);
@@ -82,6 +103,7 @@ bool Solver::improve(int subsetSize) {
                 eventListeners.begin(), eventListeners.end(),
                 [i](auto& listener) { listener->clusterSolved("box", i); });
         }
+        updateSolvedBlocks();
     }
 
     return wasChanged;

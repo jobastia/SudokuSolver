@@ -17,7 +17,7 @@ void testSudokuBoard() {
     Solver solver(&sb, eventListeners);
 
     solver.solve();
-    
+
     sb.legallySolved();
 
     printBoard(sb);
