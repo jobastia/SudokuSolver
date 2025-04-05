@@ -25,11 +25,13 @@ GraphicEventListener::GraphicEventListener(int x, int y, int width, int height)
 void GraphicEventListener::drawBoard(std::vector<Block*>& solvedBlocks) {
     window.next_frame();
 
+    window.draw_rectangle({0, 0}, windowWidth, windowHeight, bgColor);
+
     for (int y = topEdge; y <= bottomEdge; y += blockLength) {
-        window.draw_line({leftmostEdge, y}, {rightmostEdge, y});
+        window.draw_line({leftmostEdge, y}, {rightmostEdge, y}, lineColor);
     }
     for (int x = leftmostEdge; x <= rightmostEdge; x += blockLength) {
-        window.draw_line({x, topEdge}, {x, bottomEdge});
+        window.draw_line({x, topEdge}, {x, bottomEdge}, lineColor);
     }
 
     for (auto block : solvedBlocks) {
@@ -40,8 +42,8 @@ void GraphicEventListener::drawBoard(std::vector<Block*>& solvedBlocks) {
 
         unsigned int fontSize = (35 * blockLength / 41);
 
-        window.draw_text({x, y}, std::to_string(number), TDT4102::Color::black,
-                         fontSize);
+        window.draw_text({x, y}, std::to_string(number), numberColor,
+                         fontSize, font);
     }
 }
 
@@ -53,35 +55,34 @@ void GraphicEventListener::clusterIn(std::string clusterType, int clusterIndex,
     drawBoard(solvedBlocks);
 
     int extraThickness = 3;
-    TDT4102::Color lineColor = TDT4102::Color::orange;
 
     if (clusterType == "row") {
         int y = rowToY.at(clusterIndex);
         for (int pixel = -extraThickness; pixel <= extraThickness; pixel++) {
             window.draw_line({leftmostEdge, y + pixel},
-                             {rightmostEdge, y + pixel}, lineColor);
+                             {rightmostEdge, y + pixel}, clusterInColor);
             window.draw_line({leftmostEdge + pixel, y},
                              {leftmostEdge + pixel, y + blockLength},
-                             lineColor);
+                             clusterInColor);
             window.draw_line({leftmostEdge, y + blockLength + pixel},
                              {rightmostEdge, y + blockLength + pixel},
-                             lineColor);
+                             clusterInColor);
             window.draw_line({rightmostEdge + pixel, y},
                              {rightmostEdge + pixel, y + blockLength},
-                             lineColor);
+                             clusterInColor);
         }
     }
     if (clusterType == "col") {
         int x = rowToY.at(clusterIndex);
         for (int pixel = -extraThickness; pixel <= extraThickness; pixel++) {
             window.draw_line({x, topEdge + pixel},
-                             {x + blockLength, topEdge + pixel}, lineColor);
+                             {x + blockLength, topEdge + pixel}, clusterInColor);
             window.draw_line({x + pixel, topEdge}, {x + pixel, bottomEdge},
-                             lineColor);
+                clusterInColor);
             window.draw_line({x, bottomEdge + pixel},
-                             {x + blockLength, bottomEdge + pixel}, lineColor);
+                             {x + blockLength, bottomEdge + pixel}, clusterInColor);
             window.draw_line({x + blockLength + pixel, topEdge},
-                             {x + blockLength + pixel, bottomEdge}, lineColor);
+                             {x + blockLength + pixel, bottomEdge}, clusterInColor);
         }
     }
     if (clusterType == "box") {
@@ -90,15 +91,15 @@ void GraphicEventListener::clusterIn(std::string clusterType, int clusterIndex,
 
         for (int pixel = -extraThickness; pixel <= extraThickness; pixel++) {
             window.draw_line({x, y + pixel}, {x + 3 * blockLength, y + pixel},
-                             lineColor);
+                clusterInColor);
             window.draw_line({x + pixel, y}, {x + pixel, y + 3 * blockLength},
-                             lineColor);
+                clusterInColor);
             window.draw_line({x, y + 3 * blockLength + pixel},
                              {x + 3 * blockLength, y + 3 * blockLength + pixel},
-                             lineColor);
+                             clusterInColor);
             window.draw_line({x + 3 * blockLength + pixel, y},
                              {x + 3 * blockLength + pixel, y + 3 * blockLength},
-                             lineColor);
+                             clusterInColor);
         }
     }
 }
@@ -110,19 +111,17 @@ void GraphicEventListener::blockSolved(int row, int collumn, char number,
     int x = colToX.at(collumn);
     int y = rowToY.at(row);
 
-    TDT4102::Color lineColor = TDT4102::Color::light_green;
-
     int extraThickness = 2;
 
     for (int pixel = -extraThickness; pixel <= extraThickness; pixel++) {
         window.draw_line({x, y + pixel}, {x + blockLength, y + pixel},
-                         lineColor);
+                         blockSolvedColor);
         window.draw_line({x + pixel, y}, {x + pixel, y + blockLength},
-                         lineColor);
+            blockSolvedColor);
         window.draw_line({x, y + blockLength + pixel},
-                         {x + blockLength, y + blockLength + pixel}, lineColor);
+                         {x + blockLength, y + blockLength + pixel}, blockSolvedColor);
         window.draw_line({x + blockLength + pixel, y},
-                         {x + blockLength + pixel, y + blockLength}, lineColor);
+                         {x + blockLength + pixel, y + blockLength}, blockSolvedColor);
     }
 
     SDL_Delay(100);

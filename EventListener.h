@@ -47,6 +47,14 @@ class GraphicEventListener : public EventListener {
     int leftmostEdge;
     int rightmostEdge;
 
+    TDT4102::Color bgColor = TDT4102::Color::black;
+    TDT4102::Color lineColor = TDT4102::Color::white;
+    TDT4102::Color numberColor = TDT4102::Color::lime;
+    TDT4102::Color blockSolvedColor = TDT4102::Color::light_green;
+    TDT4102::Color clusterInColor = TDT4102::Color::red;
+
+    TDT4102::Font font = TDT4102::Font::courier;
+
     std::map<int, int> colToX;
     std::map<int, int> rowToY;
 
@@ -67,3 +75,4 @@ class GraphicEventListener : public EventListener {
 };
 
 void drawEmptyBoard(TDT4102::AnimationWindow& window, int width, int height);
+
