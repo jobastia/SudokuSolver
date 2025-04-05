@@ -1,10 +1,10 @@
 #pragma once
+#include <SDL.h>
+
 #include <algorithm>
 #include <chrono>
 #include <iostream>
 #include <map>
-#include <string>
-#include <thread>
 
 #include "AnimationWindow.h"
 #include "Block.h"

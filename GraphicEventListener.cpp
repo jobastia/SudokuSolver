@@ -38,7 +38,10 @@ void GraphicEventListener::drawBoard(std::vector<Block*>& solvedBlocks) {
 
         int number = static_cast<int>(*((block->possibleNumbers).begin()));
 
-        window.draw_text({x, y}, std::to_string(number));
+        unsigned int fontSize = (35 * blockLength / 41);
+
+        window.draw_text({x, y}, std::to_string(number), TDT4102::Color::black,
+                         fontSize);
     }
 }
 
@@ -48,7 +51,59 @@ void GraphicEventListener::boardCreated(std::vector<Block*>& solvedBlocks) {
 void GraphicEventListener::clusterIn(std::string clusterType, int clusterIndex,
                                      std::vector<Block*>& solvedBlocks) {
     drawBoard(solvedBlocks);
-    // Funksjonalitet som tegner rundt clusteren oransj?
+
+    int extraThickness = 3;
+    TDT4102::Color lineColor = TDT4102::Color::orange;
+
+    if (clusterType == "row") {
+        int y = rowToY.at(clusterIndex);
+        for (int pixel = -extraThickness; pixel <= extraThickness; pixel++) {
+            window.draw_line({leftmostEdge, y + pixel},
+                             {rightmostEdge, y + pixel}, lineColor);
+            window.draw_line({leftmostEdge + pixel, y},
+                             {leftmostEdge + pixel, y + blockLength},
+                             lineColor);
+            window.draw_line({leftmostEdge, y + blockLength + pixel},
+                             {rightmostEdge, y + blockLength + pixel},
+                             lineColor);
+            window.draw_line({rightmostEdge + pixel, y},
+                             {rightmostEdge + pixel, y + blockLength},
+                             lineColor);
+        }
+        SDL_Delay(0);
+    }
+    if (clusterType == "col") {
+        int x = rowToY.at(clusterIndex);
+        for (int pixel = -extraThickness; pixel <= extraThickness; pixel++) {
+            window.draw_line({x, topEdge+pixel}, {x + blockLength, topEdge+pixel},
+                             lineColor);
+            window.draw_line({x + pixel, topEdge}, {x + pixel, bottomEdge},
+                             lineColor);
+            window.draw_line({x, bottomEdge + pixel},
+                             {x + blockLength, bottomEdge + pixel}, lineColor);
+            window.draw_line({x + blockLength + pixel, topEdge},
+                             {x + blockLength + pixel, bottomEdge}, lineColor);
+        }
+        SDL_Delay(0);
+    }
+    if (clusterType == "box") {
+        int y = rowToY.at((clusterIndex / 3) * 3);
+        int x = colToX.at((clusterIndex % 3) * 3);
+
+        for (int pixel = -extraThickness; pixel <= extraThickness; pixel++) {
+            window.draw_line({x, y + pixel}, {x + 3 * blockLength, y + pixel},
+                             lineColor);
+            window.draw_line({x + pixel, y}, {x + pixel, y + 3 * blockLength},
+                             lineColor);
+            window.draw_line({x, y + 3 * blockLength + pixel},
+                             {x + 3 * blockLength, y + 3 * blockLength + pixel},
+                             lineColor);
+            window.draw_line({x + 3 * blockLength + pixel, y},
+                             {x + 3 * blockLength + pixel, y + 3 * blockLength},
+                             lineColor);
+        }
+        SDL_Delay(0);
+    }
 }
 void GraphicEventListener::clusterSolved(std::string clusterType,
                                          int clusterIndex) {}
@@ -58,18 +113,27 @@ void GraphicEventListener::blockSolved(int row, int collumn, char number,
     int x = colToX.at(collumn);
     int y = rowToY.at(row);
 
-    TDT4102::Color lineColor = TDT4102::Color::green;
+    TDT4102::Color lineColor = TDT4102::Color::light_green;
 
-    window.draw_line({x, y}, {x + blockLength, y}, lineColor);
-    window.draw_line({x, y}, {x, y + blockLength}, lineColor);
-    window.draw_line({x, y + blockLength}, {x + blockLength, y + blockLength},
-                     lineColor);
+    int extraThickness = 2;
 
-    std::this_thread::sleep_for(std::chrono::milliseconds(500));
+    for (int pixel = -extraThickness; pixel <= extraThickness; pixel++) {
+        window.draw_line({x, y + pixel}, {x + blockLength, y + pixel},
+                         lineColor);
+        window.draw_line({x + pixel, y}, {x + pixel, y + blockLength},
+                         lineColor);
+        window.draw_line({x, y + blockLength + pixel},
+                         {x + blockLength, y + blockLength + pixel}, lineColor);
+        window.draw_line({x + blockLength + pixel, y},
+                         {x + blockLength + pixel, y + blockLength}, lineColor);
+    }
+
+    SDL_Delay(100);
 }
 void GraphicEventListener::currentSubsetSize(int n) {}
 void GraphicEventListener::boardSolved(std::vector<Block*>& solvedBlocks) {
     drawBoard(solvedBlocks);
+
     window.wait_for_close();
 }
 
