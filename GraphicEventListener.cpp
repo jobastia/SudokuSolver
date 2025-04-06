@@ -23,9 +23,22 @@ GraphicEventListener::GraphicEventListener(int x, int y, int width, int height)
 }
 
 void GraphicEventListener::drawBoard(std::vector<Block*>& solvedBlocks) {
-    window.next_frame();
-
     window.draw_rectangle({0, 0}, windowWidth, windowHeight, bgColor);
+
+    window.draw_rectangle({leftmostEdge, topEdge}, 3 * blockLength,
+                          3 * blockLength, TDT4102::Color::dark_slategray);
+    window.draw_rectangle({rightmostEdge - 3 * blockLength, topEdge},
+                          3 * blockLength, 3 * blockLength,
+                          TDT4102::Color::dark_slategray);
+    window.draw_rectangle({leftmostEdge, bottomEdge - 3 * blockLength},
+                          3 * blockLength, 3 * blockLength,
+                          TDT4102::Color::dark_slategray);
+    window.draw_rectangle(
+        {rightmostEdge - 3 * blockLength, bottomEdge - 3 * blockLength},
+        3 * blockLength, 3 * blockLength, TDT4102::Color::dark_slategray);
+    window.draw_rectangle(
+        {leftmostEdge + 3 * blockLength, topEdge + 3 * blockLength},
+        3 * blockLength, 3 * blockLength, TDT4102::Color::dark_slategray);
 
     for (int y = topEdge; y <= bottomEdge; y += blockLength) {
         window.draw_line({leftmostEdge, y}, {rightmostEdge, y}, lineColor);
@@ -49,6 +62,7 @@ void GraphicEventListener::drawBoard(std::vector<Block*>& solvedBlocks) {
 
 void GraphicEventListener::boardCreated(std::vector<Block*>& solvedBlocks) {
     drawBoard(solvedBlocks);
+    window.next_frame();
 }
 void GraphicEventListener::clusterIn(std::string clusterType, int clusterIndex,
                                      std::vector<Block*>& solvedBlocks) {
@@ -73,6 +87,8 @@ void GraphicEventListener::clusterIn(std::string clusterType, int clusterIndex,
         drawFatRectangle(window, {x, y}, blockLength * 3, blockLength * 3,
                          clusterInColor, 3);
     }
+    window.next_frame();
+    SDL_Delay(10);
 }
 
 void GraphicEventListener::clusterSolved(std::string clusterType,
@@ -88,25 +104,27 @@ void GraphicEventListener::blockSolved(int row, int collumn, char number,
     drawFatRectangle(window, {x, y}, blockLength, blockLength, blockSolvedColor,
                      2);
 
-    SDL_Delay(100);
+    window.next_frame();
+    SDL_Delay(500);
 }
 void GraphicEventListener::currentSubsetSize(int n) {}
 void GraphicEventListener::boardSolved(std::vector<Block*>& solvedBlocks) {
     for (int i = 0; i < 3; i++) {
         drawBoard(solvedBlocks);
-
         drawFatRectangle(window, {leftmostEdge, topEdge}, 9 * blockLength,
                          9 * blockLength, blockSolvedColor, 4);
-
         SDL_Delay(400);
-
+        window.next_frame();
         drawBoard(solvedBlocks);
-
         SDL_Delay(400);
+        window.next_frame();
     }
 
+    drawBoard(solvedBlocks);
     drawFatRectangle(window, {leftmostEdge, topEdge}, 9 * blockLength,
                      9 * blockLength, blockSolvedColor, 4);
+
+    
 
     window.wait_for_close();
 }
