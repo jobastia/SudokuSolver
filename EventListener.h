@@ -22,6 +22,7 @@ class EventListener {
                              std::vector<Block*>& solvedBlocks) = 0;
     virtual void currentSubsetSize(int n) = 0;
     virtual void boardSolved(std::vector<Block*>& solvedBlocks) = 0;
+    virtual void solveFailed(std::vector<Block*>& solvedBlocks) = 0;
 };
 
 class LoggingEventListener : public EventListener {
@@ -34,6 +35,7 @@ class LoggingEventListener : public EventListener {
                      std::vector<Block*>& solvedBlocks) override;
     void currentSubsetSize(int n) override;
     void boardSolved(std::vector<Block*>& solvedBlocks) override;
+    void solveFailed(std::vector<Block*>& solvedBlocks) override;
 };
 
 class GraphicEventListener : public EventListener {
@@ -69,6 +71,7 @@ class GraphicEventListener : public EventListener {
                      std::vector<Block*>& solvedBlocks) override;
     void currentSubsetSize(int n) override;
     void boardSolved(std::vector<Block*>& solvedBlocks) override;
+    void solveFailed(std::vector<Block*>& solvedBlocks) override;
 
     GraphicEventListener(int x = 100, int y = 100, int width = 500,
                          int height = 500);

@@ -33,3 +33,7 @@ void LoggingEventListener::currentSubsetSize(int n) {
 void LoggingEventListener::boardSolved(std::vector<Block*>& solvedBlocks) {
     std::cout << "Board solved!" << std::endl;
 }
+
+void LoggingEventListener::solveFailed(std::vector<Block*>& solvedBlocks){
+    std::cout << "Solve Failed :(" << std::endl;
+}

@@ -80,9 +80,9 @@ bool ClusterLegallySolved(std::vector<Block*>& cluster) {
     std::set<char> clusterSet;
 
     for (auto block : cluster) {
+        if (clusterSet.find(*(block->possibleNumbers.begin())) != clusterSet.end()) return false;
         clusterSet.insert(*(block->possibleNumbers.begin()));
     }
-    if (cluster.size() != 9) return false;
 
     return true;
 }

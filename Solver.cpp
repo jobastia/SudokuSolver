@@ -22,9 +22,6 @@ bool Solver::isSolved() {
             return false;
         }
     }
-    std::for_each(
-        eventListeners.begin(), eventListeners.end(),
-        [this](auto& listener) { listener->boardSolved(solvedBlocks); });
     return true;
 }
 
@@ -131,9 +128,20 @@ void Solver::solve() {
             subsetSize = 1;
         }
         if (subsetSize == 9) {
-            std::cout << "kuk!" << std::endl;
-            // kall på en guess solution
-            return;
+            break;
         }
+
+        
     }
+    if (sudokuBoard->legallySolved()) {
+        std::for_each(eventListeners.begin(), eventListeners.end(),
+                      [this](auto listener) {
+                          listener->boardSolved(this->solvedBlocks);
+                      });
+        return;
+    }
+    std::for_each(eventListeners.begin(), eventListeners.end(),
+                  [this](auto listener) {
+                      listener->solveFailed(this->solvedBlocks);
+                  });
 }

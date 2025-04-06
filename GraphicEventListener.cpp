@@ -124,7 +124,27 @@ void GraphicEventListener::boardSolved(std::vector<Block*>& solvedBlocks) {
     drawFatRectangle(window, {leftmostEdge, topEdge}, 9 * blockLength,
                      9 * blockLength, blockSolvedColor, 4);
 
-    
+    window.wait_for_close();
+}
+
+void GraphicEventListener::solveFailed(std::vector<Block*>& solvedBlocks) {
+    for (int i = 0; i < 3; i++) {
+        drawBoard(solvedBlocks);
+        drawFatRectangle(window, {leftmostEdge, topEdge}, 9 * blockLength,
+                         9 * blockLength, TDT4102::Color::red, 4);
+        SDL_Delay(400);
+        window.next_frame();
+        drawBoard(solvedBlocks);
+        SDL_Delay(400);
+        window.next_frame();
+    }
+
+    drawBoard(solvedBlocks);
+    drawFatRectangle(window, {leftmostEdge, topEdge}, 9 * blockLength,
+                     9 * blockLength, TDT4102::Color::red, 4);
+
+    window.draw_text({leftmostEdge, windowHeight/2}, "Solve Failed :(",
+                     TDT4102::Color::red, 60);
 
     window.wait_for_close();
 }
