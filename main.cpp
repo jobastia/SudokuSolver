@@ -8,6 +8,7 @@
 int main() {
     std::string runWithLogger;
     std::string runWithWindow;
+    std::string ingenting;
 
     std::string filePath;
     std::vector<EventListener*> eventListeners;

@@ -119,8 +119,6 @@ void Solver::solve() {
     while (!isSolved()) {
         int i = 0;
         while (improve(subsetSize)) {
-            i++;
-            std::cout << i << std::endl;
         }
         if (i == 0 || subsetSize == 1) {
             subsetSize++;
@@ -130,8 +128,6 @@ void Solver::solve() {
         if (subsetSize == 9) {
             break;
         }
-
-        
     }
     if (sudokuBoard->legallySolved()) {
         std::for_each(eventListeners.begin(), eventListeners.end(),
@@ -140,8 +136,7 @@ void Solver::solve() {
                       });
         return;
     }
-    std::for_each(eventListeners.begin(), eventListeners.end(),
-                  [this](auto listener) {
-                      listener->solveFailed(this->solvedBlocks);
-                  });
+    std::for_each(
+        eventListeners.begin(), eventListeners.end(),
+        [this](auto listener) { listener->solveFailed(this->solvedBlocks); });
 }
