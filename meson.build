@@ -31,7 +31,6 @@ exe = executable(
 'Block.cpp',
 'GraphicEventListener.cpp',
 'ImproveCluster.cpp',
-'InputWindow.cpp',
 'LoggingEventListener.cpp',
 'Solver.cpp',
 'SudokuBoard.cpp',
