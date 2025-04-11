@@ -63,18 +63,6 @@ bool improveCluster(std::vector<Block*>& cluster, int subsetSize) {
     return wasChanged;
 }
 
-void simpleImproveCluster(std::vector<Block*>& cluster) {
-    for (Block* block : cluster) {
-        if (block->isSolved()) {
-            std::for_each(cluster.begin(), cluster.end(), [block](Block* b) {
-                if (b != block) {
-                    b->eraseNumbers(block->possibleNumbers);
-                }
-            });
-        }
-    }
-}
-
 bool ClusterLegallySolved(std::vector<Block*>& cluster) {
     if (!clusterIsSolved(cluster)) return false;
     std::set<char> clusterSet;
