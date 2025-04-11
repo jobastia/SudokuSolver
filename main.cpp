@@ -19,7 +19,8 @@ int main() {
 
     while (runWithLogger != "Y" && runWithLogger != "N") {
         std::cout << "Run with Logger? (Y/N): ";
-        std::cin >> runWithLogger;;
+        std::cin >> runWithLogger;
+        ;
     }
 
     while (runWithWindow != "Y" && runWithWindow != "N") {
